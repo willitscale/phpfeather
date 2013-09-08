@@ -3,7 +3,16 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class Sessions
+/**
+ *	Session Exception
+ *
+ *	@version 0.0.1
+ *	@package libraries\exceptions
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_Sessions
 {
 
 	private $driver;
@@ -21,7 +30,7 @@ class Sessions
 		if( array_key_exists( 'type', $session ) )
 			$driverName = $session[ 'type' ];
 		
-		$path = Application::getPath( DRIVER_SES_DIR, strtolower( $driverName ) );
+		$path = PHPF_Application::getPath( DRIVER_SES_DIR, strtolower( $driverName ) );
 
 		@include_once( $path );
 

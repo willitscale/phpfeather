@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/cached.php' );
 
-class MemcacheDriver extends Cached
+class PHPF_MemcacheDriver extends PHPF_Cached
 {
 
 	public function __construct( $attributes = array() )

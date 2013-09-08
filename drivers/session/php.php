@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/session.php' );
 
-class PhpDriver extends Session
+class PHPF_PhpDriver extends PHPF_Session
 {
 	
 	public function start()

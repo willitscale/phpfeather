@@ -5,6 +5,15 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/system.php' );
 
+/**
+ *	Controller
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\abstract
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
 abstract class Controller extends System
 {
 
@@ -15,10 +24,10 @@ abstract class Controller extends System
 	public function __construct()
 	{
 		parent::__construct();
-		$this->controller = Application::getControllerString();
-		$this->action = Application::getActionString();
+		$this->controller = PHPF_Application::getControllerString();
+		$this->action = PHPF_Application::getActionString();
 		
-		$this->params[ 'title' ] = 'PCSPECPRO';
+		$this->params[ 'title' ] = 'Title';
 		$this->params[ 'controller' ] = $this->controller;
 		$this->params[ 'action' ] = $this->action;
 	}

@@ -15,6 +15,7 @@ $database[ 'local' ][ 'port' ] = 3306;
 $database[ 'local' ][ 'user' ] = '';
 $database[ 'local' ][ 'pass' ] = '';
 $database[ 'local' ][ 'data' ] = '';
+$database[ 'local' ][ 'test' ] = false;
 	
 $autoload[ 'cache' ] = 'Cache';
 

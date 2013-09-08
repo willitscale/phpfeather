@@ -3,10 +3,19 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-if( !function_exists( 'dropDownOptions' ) )
+/**
+ *	DROPDOWNS
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\helpers
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_DROPDOWNS
 {
 
-	function dropDownOptions( $options, $selected = null, $default = true )
+	public static function dropDownOptions( $options, $selected = null, $default = true )
 	{
 	
 		$dropDowns = array();

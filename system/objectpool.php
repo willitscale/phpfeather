@@ -3,54 +3,94 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class ObjectPool
+/**
+ *	Object Pool	
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\system
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_ObjectPool
 {
-
+	/**
+	 *	@access private
+	 *	@var PHPF_ObjectPool
+	 */
 	private static $instance = null;
 
-	public static function &instance()
-	{
-		if( is_null( ObjectPool::$instance ) || 
-			!( ObjectPool::$instance instanceof ObjectPool ) )
-			ObjectPool::$instance = new ObjectPool();
-		return ObjectPool::$instance;
-	}
-
+	/**
+	 *	@access private
+	 *	@var Array
+	 */
 	private static $modelPool = array();
+
+	/**
+	 *	@access private
+	 *	@var Array
+	 */
 	private static $libraryPool = array();
+
+	/**
+	 *	@access private
+	 *	@var null
+	 */
 	private static $null = null;
 
+	/**
+	 *	@access private
+	 */
 	private function __construct(){}
+
+	/**
+	 *	@access private
+	 */
 	private function __clone(){}
 
 	public function &getModel( $model = null )
 	{
-		if( !isset( $model ) || is_null( $model ) || !array_key_exists( $model, ObjectPool::$modelPool ) )
-			return ObjectPool::$null;
-		return ObjectPool::$modelPool[ $model ];
+		if( is_null( $model ) || !array_key_exists( $model, self::$modelPool ) )
+			return self::$null;
+
+		return self::$modelPool[ $model ];
 	}
 	
 	public function &addModel( $name = null, &$model = null )
 	{
-		if( is_null( $name ) || !isset( $name ) || is_null( $model ) || !isset( $model ) || !( $model instanceof Model ) )
-			return ObjectPool::$null;
-		ObjectPool::$modelPool[ $name ] = $model;
-		return ObjectPool::$modelPool[ $name ];
+		if( !isset( $name ) || !isset( $model ) || !( $model instanceof PHPF_Model ) )
+			return self::$null;
+
+		self::$modelPool[ $name ] = $model;
+
+		return self::$modelPool[ $name ];
 	}
 	
 	public function &getLibrary( $library = null )
 	{
-		if( !isset( $library ) || is_null( $library ) || !array_key_exists( $library, ObjectPool::$libraryPool ) )
-			return ObjectPool::$null;
-		return ObjectPool::$libraryPool[ $library ];
+		if( !isset( $library ) || !array_key_exists( $library, self::$libraryPool ) )
+			return self::$null;
+
+		return self::$libraryPool[ $library ];
 	}
 	
 	public function &addLibrary( $name = null, &$library = null )
 	{
-		if( is_null( $name ) || !isset( $name ) || is_null( $library ) || !isset( $library ) )
-			return ObjectPool::$null;
-		ObjectPool::$libraryPool[ $name ] = $library;
-		return ObjectPool::$libraryPool[ $name ];
+		if( !isset( $name ) || !isset( $library ) )
+			return self::$null;
+
+		self::$libraryPool[ $name ] = $library;
+
+		return self::$libraryPool[ $name ];
+	}
+
+	public static function &instance()
+	{
+		if( is_null( self::$instance ) || 
+			!( self::$instance instanceof PHPF_ObjectPool ) )
+			self::$instance = new PHPF_ObjectPool();
+
+		return self::$instance;
 	}
 
 }

@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/results.php' );
 
-class MysqliResults extends Results
+class PHPF_MysqliResults extends PHPF_Results
 {
 
 	public function __construct( $mysqliResults = null )

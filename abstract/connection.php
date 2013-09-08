@@ -3,10 +3,20 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-abstract class Connection
+/**
+ *	Connection
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\abstract
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+abstract class PHPF_Connection
 {
 	
 	protected $connection;
+	protected $connected = false;
 
 	abstract public function connect();
 	abstract public function disconnect();
@@ -88,6 +98,12 @@ abstract class Connection
 
 		return call_user_func_array( 'sprintf', $args );
 
+	}
+	
+	public function testConnection()
+	{
+		if( !$this->connected )
+			$this->connect();
 	}
 
 }

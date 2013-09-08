@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 @include_once( 'exceptions/database.php' );
 	
-class Database
+class PHPF_Database
 {
 
 	private $instances = array();
@@ -29,27 +29,30 @@ class Database
 			$name = 'default';
 		
 		if( !is_array( $attributes ) || 0 >= sizeof( $attributes ) )
-			throw new DatabaseException( INVALID_DB_ATTRIBUTES );
+			throw new PHPF_DatabaseException( INVALID_DB_ATTRIBUTES );
 		
 		if( !array_key_exists( 'driver', $attributes ) )
-			throw new DatabaseException( INVALID_DB_DRIVER );
+			throw new PHPF_DatabaseException( INVALID_DB_DRIVER );
 		
 		if( !array_key_exists( 'user', $attributes ) )
-			throw new DatabaseException( INVALID_DB_USER );
+			throw new PHPF_DatabaseException( INVALID_DB_USER );
 		
 		if( !array_key_exists( 'pass', $attributes ) )
-			throw new DatabaseException( INVALID_DB_PASS );
+			throw new PHPF_DatabaseException( INVALID_DB_PASS );
 		
 		if( !array_key_exists( 'data', $attributes ) )
-			throw new DatabaseException( INVALID_DB_DATA );
+			throw new PHPF_DatabaseException( INVALID_DB_DATA );
 		
 		if( !array_key_exists( 'host', $attributes ) )
-			throw new DatabaseException( INVALID_DB_HOST );
+			throw new PHPF_DatabaseException( INVALID_DB_HOST );
 		
 		if( !array_key_exists( 'port', $attributes ) )
-			throw new DatabaseException( INVALID_DB_PORT );
+			throw new PHPF_DatabaseException( INVALID_DB_PORT );
+		
+		if( !array_key_exists( 'test', $attributes ) )
+			throw new PHPF_DatabaseException( INVALID_DB_TEST );
 
-		$path = Application::getPath( DRIVER_DB_DIR, strtolower( $attributes[ 'driver' ] ) );
+		$path = PHPF_Application::getPath( DRIVER_DB_DIR, strtolower( $attributes[ 'driver' ] ) );
 
 		@include_once( $path );
 
@@ -62,22 +65,25 @@ class Database
 		}
 		catch( Exception $e )
 		{
-			throw new Exception( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
+			throw new PHPF_DatabaseException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
 		}
 		
-		$this->instances[ $name ]->connect();
+		if( $attributes[ 'test' ] )
+			$this->testConnection();
 		
 		$this->currentInstance = $name;
 	}
 	
 	public function query()
 	{
+		$this->testConnection();
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'query' ), $params );
 	}
 	
 	public function queryString()
 	{
+		$this->testConnection();
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'queryString' ), $params );
 	}
@@ -94,20 +100,28 @@ class Database
 	
 	public function error()
 	{
+		$this->testConnection();
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'error' ), $params );
 	}
 	
 	public function id()
 	{
+		$this->testConnection();
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'id' ), $params );
 	}
 	
 	public function info()
 	{
+		$this->testConnection();
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'info' ), $params );
+	}
+	
+	public function testConnection()
+	{
+		$this->instances[ $this->currentInstance ]->testConnection();
 	}
 
 }

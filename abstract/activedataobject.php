@@ -5,7 +5,16 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/model.php' );
 
-abstract class ActiveDataObject extends Model
+/**
+ *	Active Data Object
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\abstract
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+abstract class PHPF_ActiveDataObject extends Model
 {
 
 	protected $table;

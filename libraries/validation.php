@@ -3,7 +3,16 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class Validation
+/**
+ *	Validation
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\libraries
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_Validation
 {
 
 	public function __construct()
@@ -13,7 +22,6 @@ class Validation
 	public function check( $value, $min = 0, $max = 100, $expression = REGEXP_ANYTHING, 
 		$blank = false, $numeric = false )
 	{
-	
 		$bitmask = ZERO;
 		
 		if( !$blank && $this->blank( $value, $numeric ) )

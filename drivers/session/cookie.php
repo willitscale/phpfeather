@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/session.php' );
 
-class CookieDriver extends Session
+class PHPF_CookieDriver extends PHPF_Session
 {
 
 }

@@ -5,7 +5,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 @include_once( 'exceptions/cache.php' );
 
-class Cache
+class PHPF_Cache
 {
 	private $instances = array();
 	private $currentInstance;
@@ -28,9 +28,9 @@ class Cache
 			$name = 'default';
 		
 		if( !is_array( $attributes ) )
-			throw new CacheException( INVALID_ATTRIBUTES );
+			throw new PHPF_CacheException( INVALID_ATTRIBUTES );
 
-		$path = Application::getPath( DRIVER_CACHE_DIR, strtolower( $attributes[ 'driver' ] ) );
+		$path = PHPF_Application::getPath( DRIVER_CACHE_DIR, strtolower( $attributes[ 'driver' ] ) );
 
 		@include_once( $path );
 
@@ -42,7 +42,7 @@ class Cache
 		}
 		catch( Exception $e )
 		{
-			throw new Exception( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
+			throw new PHPF_CacheException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
 		}
 		
 		$this->instances[ $name ]->connect();

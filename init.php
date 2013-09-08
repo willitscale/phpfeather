@@ -6,9 +6,9 @@ ini_set( 'display_errors', '1' );
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-@include_once( 'config/constants.php' );
-@include_once( 'config/local.php' );
-@include_once( 'system/application.php' );
+require_once( 'config/constants.php' );
+require_once( 'config/local.php' );
+require_once( 'system/application.php' );
 
 switch( APPLICATION_RELEASE )
 {
@@ -30,7 +30,7 @@ switch( APPLICATION_RELEASE )
 
 try
 {
-	Application::init();
+	PHPF_Application::init();
 }
 catch( Exception $exception )
 {

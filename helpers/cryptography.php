@@ -3,18 +3,22 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class CRYPTOGRAPHY
+/**
+ *	CRYPTOGRAPHY
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\helpers
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_CRYPTOGRAPHY
 {
 
 	private static $HASH_ALGORITHM = 'sha256';
 	private static $ITERATIONS = 1000;
 	private static $SALT_BYTES = 128;
 	private static $HASH_BYTES = 128;
-
-	public function __construct()
-	{
-	
-	}
 
 	public static function &ENCRYPT()
 	{
@@ -25,10 +29,11 @@ class CRYPTOGRAPHY
 	
 	}
 	
-	public static function &HASH( $value, $salt )
+	public static function &HASH( $value, $salt, $algorithm )
 	{
-		$hashLength = strlen( hash( CRYPTOGRAPHY::$HASH_ALGORITHM, '', TRUE ) );
-		$blockCount = ceil( CRYPTOGRAPHY::$HASH_BYTES / $hashLength );
+		$hashLength = strlen( hash( self::$HASH_ALGORITHM, '', TRUE ) );
+
+		$blockCount = ceil( self::$HASH_BYTES / $hashLength );
 
 		$output = '';
 		for( $i = 1; $i <= $blockCount; $i++ )
@@ -42,14 +47,16 @@ class CRYPTOGRAPHY
 			$output .= $xorsum;
 		}
 
-		$hash = base64_encode( bin2hex( substr( $output, 0, CRYPTOGRAPHY::$HASH_BYTES ) ) );
+		$hash = base64_encode( bin2hex( substr( $output, 0, self::$HASH_BYTES ) ) );
 
 		return $hash;
 	}
 	
-	public static function &GENERATE_SALT()
+	public static function &GENERATE_SALT( $bytes = self::$SALT_BYTES )
 	{
-		$salt = base64_encode( mcrypt_create_iv( CRYPTOGRAPHY::$SALT_BYTES, 
+		$bytes = ( int ) $bytes;
+	
+		$salt = base64_encode( mcrypt_create_iv( $bytes, 
 			MCRYPT_DEV_URANDOM ) );
 
 		return $salt;
@@ -57,6 +64,6 @@ class CRYPTOGRAPHY
 	
 	public static function COMPARE( $value, $salt, $hash )
 	{
-		return ( CRYPTOGRAPHY::HASH( $value, $salt ) === $hash );
+		return ( self::HASH( $value, $salt ) === $hash );
 	}
 }

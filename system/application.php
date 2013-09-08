@@ -4,17 +4,31 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
 include_once( 'system/objectpool.php' );
-
 include_once( 'abstract/controller.php' );
 include_once( 'abstract/model.php' );
 include_once( 'abstract/activedataobject.php' );
 
-class Application
+/**
+ *	Application	
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\system
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_Application
 {
 
 	private static $action;
 	private static $controller;
 
+	/**
+	 *	List of Magic Methods
+	 *
+	 *	@access private
+	 *	@var Array
+	 */
 	private static $magicMethods = array( 
 		'__construct', 
 		'__destruct', 
@@ -33,25 +47,30 @@ class Application
 
 	private static $urlParams = null;
 
+	/**
+	 *	Init Method
+	 *
+	 *	@access public
+	 *	@param String
+	 *	@param String
+	 */
 	public static function init( $controller = null, $action = null )
 	{
-
-		Application::autoHelpers();
+		self::autoHelpers();
 	
-		$controller = Application::getControllerString( $controller );
+		$controller = self::getControllerString( $controller );
 	
-		$object = Application::getController( $controller );
+		$object = self::getController( $controller );
 
 		unset( $controller );
 		
-		$action = Application::getActionString( $action );
+		$action = self::getActionString( $action );
 		
-		if( 1 == Application::canAccessAction( $object, $action ) )
+		if( 1 == self::canAccessAction( $object, $action ) )
 			$object->$action();
 		
 		unset( $action );
 		unset( $object );
-
 	}
 	
 	public static function autoHelpers()
@@ -60,39 +79,39 @@ class Application
 		global $helpers;
 		
 		foreach( $helpers AS $helper )
-			Application::getHelper( $helper );
+			self::getHelper( $helper );
 	
 	}
 	
 	public static function getControllerString( $controller = null )
 	{
 
-		if( isset( Application::$controller ) )
-			return Application::$controller;
+		if( isset( self::$controller ) )
+			return self::$controller;
 	
 		if( is_null( $controller ) || 0 >= sizeof( $controller ) )
-			$controller = Application::getUrlParam( 1 );
+			$controller = self::getUrlParam( 1 );
 
 		if( is_null( $controller ) )
 			$controller = DEFAULT_CONTROLLER;
 		
-		return ( Application::$controller = $controller );
+		return ( self::$controller = $controller );
 
 	}
 	
 	public static function getActionString( $action = null )
 	{
 
-		if( isset( Application::$action ) )
-			return Application::$action;
+		if( isset( self::$action ) )
+			return self::$action;
 
 		if( is_null( $action ) )
-			$action = Application::getUrlParam( 2 );
+			$action = self::getUrlParam( 2 );
 
 		if( is_null( $action ) )
 			$action = DEFAULT_ACTION;
 		
-		return ( Application::$action = $action );
+		return ( self::$action = $action );
 
 	}
 	
@@ -115,7 +134,7 @@ class Application
 		if( is_null( $controller ) || is_null( $action ) )
 			return 0;
 	
-		if( in_array( $action, Application::$magicMethods ) )
+		if( in_array( $action, self::$magicMethods ) )
 			return 0;
 
 		if( !method_exists( $controller, $action ) )
@@ -130,7 +149,7 @@ class Application
 
 	public static function &objectPool()
 	{
-		return ObjectPool::instance();
+		return PHPF_ObjectPool::instance();
 	}
 
 	public function getPath( $formattedURI, $suffix )
@@ -139,7 +158,7 @@ class Application
 		if( file_exists( $path=sprintf( $formattedURI, './', $suffix ) ) )
 			return $path;
 	
-		if( file_exists( $path=sprintf( $formattedURI, Application::basePath(), $suffix ) ) )
+		if( file_exists( $path=sprintf( $formattedURI, self::basePath(), $suffix ) ) )
 			return $path;
 
 		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', FRAMEWORK_PATH ), $suffix ) ) )
@@ -160,13 +179,13 @@ class Application
 		if( !isset( $library ) || is_null( $library ) )
 			throw new Exception( INVALID_LIBRARY );
 
-		$objectPool = Application::objectPool();
+		$objectPool = self::objectPool();
 
 		if( !is_null( $objectPool->getLibrary( $library ) ) )
 			return $objectPool->getLibrary( $library );
 
 		
-		$path = Application::getPath( LIBRARY_DIR, strtolower( $library ) );
+		$path = self::getPath( LIBRARY_DIR, strtolower( $library ) );
 
 		@include_once( $path );
 
@@ -177,7 +196,7 @@ class Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
-				Application::exceptionHandler( $e );
+				self::exceptionHandler( $e );
 			throw new Exception( sprintf( LIBRARY_NOT_EXIST, $library ) );
 		}
 
@@ -191,12 +210,12 @@ class Application
 		if( !isset( $model ) || is_null( $model ) )
 			throw new Exception( INVALID_MODEL );
 
-		$objectPool = Application::objectPool();
+		$objectPool = self::objectPool();
 
 		if( !is_null( $objectPool->getModel( $model ) ) )
 			return $objectPool->getModel( $model );
 
-		$path = Application::getPath( MODEL_DIR, strtolower( $model ) );
+		$path = self::getPath( MODEL_DIR, strtolower( $model ) );
 
 		@include_once( $path );
 
@@ -207,7 +226,7 @@ class Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
-				Application::exceptionHandler( $e );
+				self::exceptionHandler( $e );
 			throw new Exception( sprintf( MODEL_NOT_EXIST, $controller ) );
 		}
 
@@ -224,7 +243,7 @@ class Application
 		if( !isset( $helper ) || is_null( $helper ) )
 			throw new Exception( INVALID_HELPER );
 
-		$path = Application::getPath( HELPER_DIR, strtolower( $helper ) );
+		$path = self::getPath( HELPER_DIR, strtolower( $helper ) );
 
 		@include_once( $path );
 
@@ -235,10 +254,10 @@ class Application
 		if( !isset( $view ) || is_null( $view ) )
 			throw new Exception( INVALID_VIEW );
 
-		$path = Application::getPath( VIEW_DIR, strtolower( $view ) );
+		$path = self::getPath( VIEW_DIR, strtolower( $view ) );
 
 		if( is_object( $flags ) )
-			$flags = Application::objectToArray( $flags );
+			$flags = self::objectToArray( $flags );
 
 		if( isset( $flags ) && is_array( $flags ) )
 			foreach( $flags AS $key => $val )
@@ -258,7 +277,7 @@ class Application
 		if( !isset( $controller ) || is_null( $controller ) )
 			throw new Exception( INVALID_CONTROLLER );
 
-		$path = Application::getPath( CONTROLLER_DIR, strtolower( $controller ) );
+		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
 
 		@include_once( $path );
 
@@ -269,7 +288,7 @@ class Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
-				Application::exceptionHandler( $e );
+				self::exceptionHandler( $e );
 			throw new Exception( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
 		}
 
@@ -287,7 +306,7 @@ class Application
 			return $array;
 
 		foreach( $array AS $key => $val )
-			$object->$key = Application::arrayToObject( $val );
+			$object->$key = self::arrayToObject( $val );
 
 		return $object;
 	}
@@ -300,7 +319,7 @@ class Application
 			return $object;
 
 		foreach( $object AS $key => $val )
-			$array[ $key ] = Application::objectToArray( $val );
+			$array[ $key ] = self::objectToArray( $val );
 
 		return $array;
 	}
@@ -310,7 +329,7 @@ class Application
 		if( !isset( $param ) || 0 >= $param-- )
 			return null;
 
-		if( !is_array( Application::$urlParams ) )
+		if( !is_array( self::$urlParams ) )
 		{
 		
 			global $mapping;
@@ -322,18 +341,18 @@ class Application
 
 			foreach( explode( '/', $args ) AS $val )
 				if( '' !== $val )
-					Application::$urlParams[] = $val;
+					self::$urlParams[] = $val;
 		}
 
 		unset( $args );
 		
-		if( !is_array( Application::$urlParams ) )
-			Application::$urlParams = array();
+		if( !is_array( self::$urlParams ) )
+			self::$urlParams = array();
 		
-		if( !array_key_exists( $param, Application::$urlParams ) )
+		if( !array_key_exists( $param, self::$urlParams ) )
 			return null;
 
-		return Application::$urlParams[ $param ];
+		return self::$urlParams[ $param ];
 	}
 
 	public static function exceptionHandler(Exception $e)

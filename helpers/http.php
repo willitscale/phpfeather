@@ -3,7 +3,16 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class HTTP
+/**
+ *	HTTP
+ *
+ *	@version 0.0.1
+ *	@package phpfeather\helpers
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class PHPF_HTTP
 {
 	public static $codes = array(
 			'100'	=>	'Continue',

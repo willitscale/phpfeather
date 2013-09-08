@@ -3,7 +3,7 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-class Cookies
+class PHPF_Cookies
 {
 
 	public function __construct()

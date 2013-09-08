@@ -6,7 +6,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 include_once( 'abstract/connection.php' );
 include_once( 'drivers/results/mysqli.php' );
 
-class MysqliDriver extends Connection
+class PHPF_MysqliDriver extends PHPF_Connection
 {
 
 	private $host;
@@ -29,11 +29,14 @@ class MysqliDriver extends Connection
 		$this->connection = new mysqli( $this->host, $this->user, $this->pass, $this->data, $this->port );
 		if( 0 !== @$this->connection->connect_errno )
 			throw new DatabaseException( INVALID_DB_CREDENTIALS );
+		else
+			$this->connected = true;
 	}
 
 	public function disconnect()
 	{
-		$this->connection->close();
+		if( $this->connected )
+			$this->connection->close();
 	}
 
 	public function query()
