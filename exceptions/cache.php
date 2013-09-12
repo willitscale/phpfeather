@@ -13,3 +13,4 @@ if( !defined( 'SYSTEM_ACCESS' ) )
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
 class PHPF_CacheException extends Exception{}
+

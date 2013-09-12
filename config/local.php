@@ -3,6 +3,8 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
+define( 'APPLICATION_RELEASE', DEVELOPMENT, true );
+
 /*
 
 Example Config :

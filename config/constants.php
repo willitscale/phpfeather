@@ -9,8 +9,6 @@ define( 'DEVELOPMENT',  0x01, true );
 define( 'TESTING', 0x02, true );
 define( 'PRODUCTION',  0x03, true );
 
-define( 'APPLICATION_RELEASE', DEVELOPMENT, true );
-
 define( 'INVALID_CONTROLLER',  'Invalid controller requested.', true );
 define( 'INVALID_MODEL',  'Invalid model requested.', true );
 define( 'INVALID_LIBRARY',  'Invalid library requested.', true );

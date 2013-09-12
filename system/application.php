@@ -3,10 +3,10 @@
 if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 
-include_once( 'system/objectpool.php' );
-include_once( 'abstract/controller.php' );
-include_once( 'abstract/model.php' );
-include_once( 'abstract/activedataobject.php' );
+require_once( 'system/objectpool.php' );
+require_once( 'abstract/controller.php' );
+require_once( 'abstract/model.php' );
+require_once( 'abstract/activedataobject.php' );
 
 /**
  *	Application	
@@ -164,7 +164,7 @@ class PHPF_Application
 		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', FRAMEWORK_PATH ), $suffix ) ) )
 			return $path;
 
-		throw new Exception( INVALID_FILE_REQUESTED );
+		throw new PHPF_ApplicationException( INVALID_FILE_REQUESTED );
 
 	}
 	
@@ -177,7 +177,7 @@ class PHPF_Application
 	{
 
 		if( !isset( $library ) || is_null( $library ) )
-			throw new Exception( INVALID_LIBRARY );
+			throw new PHPF_ApplicationException( INVALID_LIBRARY );
 
 		$objectPool = self::objectPool();
 
@@ -197,7 +197,7 @@ class PHPF_Application
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
 				self::exceptionHandler( $e );
-			throw new Exception( sprintf( LIBRARY_NOT_EXIST, $library ) );
+			throw new PHPF_ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
 		}
 
 		return $objectPool->addLibrary( $library, $object );
@@ -208,7 +208,7 @@ class PHPF_Application
 	{
 
 		if( !isset( $model ) || is_null( $model ) )
-			throw new Exception( INVALID_MODEL );
+			throw new PHPF_ApplicationException( INVALID_MODEL );
 
 		$objectPool = self::objectPool();
 
@@ -227,11 +227,11 @@ class PHPF_Application
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
 				self::exceptionHandler( $e );
-			throw new Exception( sprintf( MODEL_NOT_EXIST, $controller ) );
+			throw new PHPF_ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
 		}
 
 		if( !( $object instanceof Model ) )
-			throw new Exception( INVALID_MODEL );
+			throw new PHPF_ApplicationException( INVALID_MODEL );
 
 		return $objectPool->addModel( $model, $object );
 
@@ -241,7 +241,7 @@ class PHPF_Application
 	{
 
 		if( !isset( $helper ) || is_null( $helper ) )
-			throw new Exception( INVALID_HELPER );
+			throw new PHPF_ApplicationException( INVALID_HELPER );
 
 		$path = self::getPath( HELPER_DIR, strtolower( $helper ) );
 
@@ -252,7 +252,7 @@ class PHPF_Application
 	public static function &getView( $view = null, &$flags = array() )
 	{
 		if( !isset( $view ) || is_null( $view ) )
-			throw new Exception( INVALID_VIEW );
+			throw new PHPF_ApplicationException( INVALID_VIEW );
 
 		$path = self::getPath( VIEW_DIR, strtolower( $view ) );
 
@@ -275,7 +275,7 @@ class PHPF_Application
 	{
 	
 		if( !isset( $controller ) || is_null( $controller ) )
-			throw new Exception( INVALID_CONTROLLER );
+			throw new PHPF_ApplicationException( INVALID_CONTROLLER );
 
 		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
 
@@ -289,11 +289,11 @@ class PHPF_Application
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
 				self::exceptionHandler( $e );
-			throw new Exception( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
+			throw new PHPF_ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
 		}
 
 		if( !( $object instanceof Controller ) )
-			throw new Exception( INVALID_CONTROLLER );
+			throw new PHPF_ApplicationException( INVALID_CONTROLLER );
 
 		return $object;
 	}
