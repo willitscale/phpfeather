@@ -20,6 +20,11 @@ class PHPF_INIT
 {
 	public function __construct()
 	{
+		self::init();
+	}
+
+	private static function init()
+	{
 		try
 		{
 			PHPF_Debugging:init();
@@ -27,23 +32,22 @@ class PHPF_INIT
 		}
 		catch( Exception $exception )
 		{
-			switch( APPLICATION_RELEASE )
-			{
-				case DEVELOPMENT : 
-					printf( '<pre>%s</pre>', $exception->getMessage() );
-					break;
-		
-				case TESTING : 
-				case PRODUCTION : 
-					include_once( 'static/html/404.html' );
-					break;
-			}
+			self::debug( $exception );
 		}
 	}
-
-	private function init()
+	
+	private static function debug( $exception )
 	{
-
+		switch( APPLICATION_RELEASE )
+		{
+			case DEVELOPMENT : 
+				printf( '<pre>%s</pre>', $exception->getMessage() );
+				break;
+	
+			case TESTING : 
+			case PRODUCTION : 
+				include_once( 'static/html/404.html' );
+				break;
+		}
 	}
 }
-
