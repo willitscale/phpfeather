@@ -1,7 +1,11 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\exceptions;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
-        trigger_error( 'Unable to access application.', E_USER_ERROR );
+{
+	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 /**
  *      Cache Exception
@@ -12,5 +16,5 @@ if( !defined( 'SYSTEM_ACCESS' ) )
  *      @license GPL v2
  *      @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_ApplicationException extends Exception{}
+class PHPF_ApplicationException extends \Exception{}
 

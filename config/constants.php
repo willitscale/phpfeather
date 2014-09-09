@@ -1,7 +1,9 @@
 <?php
 
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 define( 'ZERO', 0x00, true );
 

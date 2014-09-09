@@ -1,7 +1,11 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\abstraction;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+{
+    trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 /**
  *	Connection
@@ -33,8 +37,10 @@ abstract class PHPF_Connection
 
 		$args = func_get_args();
 
-		if( !is_array( $args ) || 0 == sizeof( $args ) )
+		if( !is_array( $args ) || empty( $args ) )
+		{
 			return '';
+		}
 
 		$matches = null;
 		$escaped = array();
@@ -52,10 +58,14 @@ abstract class PHPF_Connection
 					$ni--;
 				}
 				else
+				{
 					$escape = $key + $ni;
+				}
 
 				if( !array_key_exists( $escape, $args ) || in_array( $escape, $escaped ) )
+				{
 					continue;
+				}
 
 				switch( 1 )
 				{
@@ -67,25 +77,29 @@ abstract class PHPF_Connection
 					case preg_match( '/u$/', $val ) : 
 					case preg_match( '/x$/', $val ) : 
 					case preg_match( '/X$/', $val ) : 
+					{
 						$args[ $escape ] = intval( $args[ $escape ] );
 						break;
-
+					}
 					case preg_match( '/e$/', $val ) : 
 					case preg_match( '/E$/', $val ) : 
 					case preg_match( '/f$/', $val ) : 
 					case preg_match( '/F$/', $val ) : 
 					case preg_match( '/g$/', $val ) : 
 					case preg_match( '/G$/', $val ) : 
+					{
 						$args[ $escape ] = floatval( $args[ $escape ] );
 						break;
-
+					}
 					case preg_match( '/s$/', $val ) : 
+					{
 						$args[ $escape ] = $this->escape( strval( $args[ $escape ] ) );
 						break;
-
+					}
 					case preg_match( '/r$/', $val ) : 
+					{
 						break;
-
+					}
 				}
 
 				$escaped[] = $escape;
@@ -103,7 +117,8 @@ abstract class PHPF_Connection
 	public function testConnection()
 	{
 		if( !$this->connected )
+		{
 			$this->connect();
+		}
 	}
-
 }

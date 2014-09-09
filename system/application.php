@@ -1,12 +1,21 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\system;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 require_once( 'system/objectpool.php' );
-require_once( 'abstract/controller.php' );
-require_once( 'abstract/model.php' );
-require_once( 'abstract/activedataobject.php' );
+
+require_once( 'abstraction/controller.php' );
+require_once( 'abstraction/model.php' );
+
+require_once( 'exceptions/application.php' );
+
+use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
 /**
  *	Application	
@@ -19,8 +28,10 @@ require_once( 'abstract/activedataobject.php' );
  */
 class PHPF_Application
 {
-
+	/** */
 	private static $action;
+	
+	/** */
 	private static $controller;
 
 	/**
@@ -67,8 +78,10 @@ class PHPF_Application
 		$action = self::getActionString( $action );
 		
 		if( 1 == self::canAccessAction( $object, $action ) )
+		{
 			$object->$action();
-		
+		}
+
 		unset( $action );
 		unset( $object );
 	}
@@ -83,66 +96,89 @@ class PHPF_Application
 	
 	}
 	
+	/**
+	 * Get Controller String Method
+	 *
+	 * @param 
+	 * @return void
+	 */
 	public static function getControllerString( $controller = null )
 	{
-
 		if( isset( self::$controller ) )
+		{
 			return self::$controller;
-	
+		}
+
 		if( is_null( $controller ) || 0 >= sizeof( $controller ) )
+		{
 			$controller = self::getUrlParam( 1 );
+		}
 
 		if( is_null( $controller ) )
+		{
 			$controller = DEFAULT_CONTROLLER;
+		}
 		
 		return ( self::$controller = $controller );
-
 	}
 	
 	public static function getActionString( $action = null )
 	{
-
 		if( isset( self::$action ) )
+		{
 			return self::$action;
+		}
 
 		if( is_null( $action ) )
+		{
 			$action = self::getUrlParam( 2 );
+		}
 
 		if( is_null( $action ) )
+		{
 			$action = DEFAULT_ACTION;
-		
-		return ( self::$action = $action );
+		}
 
+		return ( self::$action = $action );
 	}
 	
 	public static function autoLoad( $instance = null )
 	{
-
 		if( !( $instance instanceof System ) )
+		{
 			return 0;
-		
+		}
+
 		global $autoload;
 		
 		foreach( $autoload AS $local => $library )
+		{
 			$instance->library( $library, $local );
-
+		}
 	}
 
 	private static function canAccessAction( $controller = null, $action = null )
 	{
-
 		if( is_null( $controller ) || is_null( $action ) )
+		{
 			return 0;
-	
+		}
+
 		if( in_array( $action, self::$magicMethods ) )
+		{
 			return 0;
+		}
 
 		if( !method_exists( $controller, $action ) )
+		{
 			return 0;
+		}
 
-		$reflection = new ReflectionMethod( $controller, $action );
+		$reflection = new \ReflectionMethod( $controller, $action );
 		if( $reflection->isPrivate() )
+		{
 			return 0;
+		}
 
 		return 1;
 	}
@@ -152,42 +188,58 @@ class PHPF_Application
 		return PHPF_ObjectPool::instance();
 	}
 
-	public function getPath( $formattedURI, $suffix )
+	public static function getPath( $formattedURI, $suffix )
 	{
-	
 		if( file_exists( $path=sprintf( $formattedURI, './', $suffix ) ) )
-			return $path;
+		{
+			return $path;	
+		}
 	
 		if( file_exists( $path=sprintf( $formattedURI, self::basePath(), $suffix ) ) )
+		{
 			return $path;
+		}
 
 		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', FRAMEWORK_PATH ), $suffix ) ) )
-			return $path;
+		{
+			return $path;	
+		}
 
-		throw new PHPF_ApplicationException( INVALID_FILE_REQUESTED );
-
+		throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_FILE_REQUESTED );
 	}
 	
+	/**
+	 * Base Path Method
+	 *
+	 * @return String
+	 */
 	public static function basePath()
 	{
 		return str_replace( DEFAULT_INDEX, '', $_SERVER[ 'SCRIPT_FILENAME' ] );
 	}
-
+	
+	/**
+	 * Base Path Method
+	 *
+	 * @return uk\co\n3tw0rk\phpfeather\abstraction\PHPF_Library
+	 */
 	public static function &getLibrary( $library = null )
 	{
-
 		if( !isset( $library ) || is_null( $library ) )
-			throw new PHPF_ApplicationException( INVALID_LIBRARY );
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_LIBRARY );
+		}
 
 		$objectPool = self::objectPool();
 
 		if( !is_null( $objectPool->getLibrary( $library ) ) )
+		{
 			return $objectPool->getLibrary( $library );
-
+		}
 		
 		$path = self::getPath( LIBRARY_DIR, strtolower( $library ) );
 
-		@include_once( $path );
+		include_once( $path );
 
 		try
 		{
@@ -196,24 +248,28 @@ class PHPF_Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
+			{
 				self::exceptionHandler( $e );
-			throw new PHPF_ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
+			}
+			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
 		}
 
 		return $objectPool->addLibrary( $library, $object );
-
 	}
 
 	public static function &getModel( $model = null )
 	{
-
 		if( !isset( $model ) || is_null( $model ) )
+		{
 			throw new PHPF_ApplicationException( INVALID_MODEL );
+		}
 
 		$objectPool = self::objectPool();
 
 		if( !is_null( $objectPool->getModel( $model ) ) )
+		{
 			return $objectPool->getModel( $model );
+		}
 
 		$path = self::getPath( MODEL_DIR, strtolower( $model ) );
 
@@ -226,42 +282,54 @@ class PHPF_Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
+			{
 				self::exceptionHandler( $e );
-			throw new PHPF_ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
+			}
+			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
 		}
 
 		if( !( $object instanceof Model ) )
-			throw new PHPF_ApplicationException( INVALID_MODEL );
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_MODEL );
+		}
 
 		return $objectPool->addModel( $model, $object );
-
 	}
 	
 	public static function getHelper( $helper )
 	{
 
 		if( !isset( $helper ) || is_null( $helper ) )
-			throw new PHPF_ApplicationException( INVALID_HELPER );
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_HELPER );
+		}
 
 		$path = self::getPath( HELPER_DIR, strtolower( $helper ) );
 
-		@include_once( $path );
-
+		include_once( $path );
 	}
 
 	public static function &getView( $view = null, &$flags = array() )
 	{
 		if( !isset( $view ) || is_null( $view ) )
-			throw new PHPF_ApplicationException( INVALID_VIEW );
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_VIEW );
+		}
 
 		$path = self::getPath( VIEW_DIR, strtolower( $view ) );
 
 		if( is_object( $flags ) )
+		{
 			$flags = self::objectToArray( $flags );
+		}
 
 		if( isset( $flags ) && is_array( $flags ) )
+		{
 			foreach( $flags AS $key => $val )
+			{
 				$$key = $val;
+			}
+		}
 
 		ob_start();
 		include( $path );
@@ -273,13 +341,14 @@ class PHPF_Application
 
 	public static function &getController( $controller = null )
 	{
-	
 		if( !isset( $controller ) || is_null( $controller ) )
+		{
 			throw new PHPF_ApplicationException( INVALID_CONTROLLER );
+		}
 
 		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
 
-		@include_once( $path );
+		include_once( $path );
 
 		try
 		{
@@ -288,12 +357,16 @@ class PHPF_Application
 		catch( Exception $e )
 		{
 			if( APPLICATION_RELEASE == DEVELOPMENT )
+			{
 				self::exceptionHandler( $e );
+			}
 			throw new PHPF_ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
 		}
 
-		if( !( $object instanceof Controller ) )
-			throw new PHPF_ApplicationException( INVALID_CONTROLLER );
+		if( !( $object instanceof ABSTRACTION\PHPF_Controller ) )
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_CONTROLLER );
+		}
 
 		return $object;
 	}
@@ -303,10 +376,14 @@ class PHPF_Application
 		$object = new stdClass;
 
 		if( !is_array( $array ) )
+		{
 			return $array;
+		}
 
 		foreach( $array AS $key => $val )
+		{
 			$object->$key = self::arrayToObject( $val );
+		}
 
 		return $object;
 	}
@@ -316,10 +393,14 @@ class PHPF_Application
 		$array = array();
 
 		if( !is_object( $object ) )
+		{
 			return $object;
+		}
 
 		foreach( $object AS $key => $val )
+		{
 			$array[ $key ] = self::objectToArray( $val );
+		}
 
 		return $array;
 	}
@@ -327,30 +408,47 @@ class PHPF_Application
 	public static function getUrlParam( $param = 0 )
 	{
 		if( !isset( $param ) || 0 >= $param-- )
+		{
 			return null;
+		}
 
 		if( !is_array( self::$urlParams ) )
 		{
 		
 			global $mapping;
 			
-			$args = $_GET[ 'args' ];
+			$args = '';
+
+			if( array_key_exists( 'u', $_GET ) )
+			{
+				$args = $_GET[ 'u' ];
+			}
 
 			if( array_key_exists( $args, $mapping ) )
+			{
 				$args = $mapping[ $args ];
+			}
 
 			foreach( explode( '/', $args ) AS $val )
+			{
 				if( '' !== $val )
+				{
 					self::$urlParams[] = $val;
+				}
+			}
 		}
 
 		unset( $args );
 		
 		if( !is_array( self::$urlParams ) )
+		{
 			self::$urlParams = array();
+		}
 		
 		if( !array_key_exists( $param, self::$urlParams ) )
+		{
 			return null;
+		}
 
 		return self::$urlParams[ $param ];
 	}

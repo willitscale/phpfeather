@@ -1,7 +1,13 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\abstraction;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
+
+use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
 
 /**
  *	System
@@ -14,23 +20,35 @@ if( !defined( 'SYSTEM_ACCESS' ) )
  */
 abstract class PHPF_System
 {
-
+	/**
+	 *
+	 */
 	public function __construct()
 	{
-		PHPF_Application::autoLoad( $this );
+		SYSTEM\PHPF_Application::autoLoad( $this );
 	}
-
+	/**
+	 * Model Method
+	 *
+	 * @param 
+	 * @param 
+	 * @return void
+	 */
 	public function model( $model = null, $local = null )
 	{
 		if( is_null( $local ) )
+		{
 			$local = strtolower( $model );
+		}
 		$this->{$local} = PHPF_Application::getModel( $model );
 	}
 
 	public function library( $library = null, $local = null )
 	{
 		if( is_null( $local ) )
+		{
 			$local = strtolower( $library );
+		}
 		$this->{$local} = PHPF_Application::getLibrary( $library );
 	}
 

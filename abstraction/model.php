@@ -1,9 +1,13 @@
 <?php
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+namespace uk\co\n3tw0rk\phpfeather\abstraction;
 
-include_once( 'abstract/system.php' );
+if( !defined( 'SYSTEM_ACCESS' ) )
+{
+	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
+
+include_once( 'abstraction/system.php' );
 
 /**
  *	Model

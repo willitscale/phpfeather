@@ -1,7 +1,11 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\system;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 /**
  *	Object Pool	
@@ -51,7 +55,9 @@ class PHPF_ObjectPool
 	public function &getModel( $model = null )
 	{
 		if( is_null( $model ) || !array_key_exists( $model, self::$modelPool ) )
+		{
 			return self::$null;
+		}
 
 		return self::$modelPool[ $model ];
 	}
@@ -59,7 +65,9 @@ class PHPF_ObjectPool
 	public function &addModel( $name = null, &$model = null )
 	{
 		if( !isset( $name ) || !isset( $model ) || !( $model instanceof PHPF_Model ) )
+		{
 			return self::$null;
+		}
 
 		self::$modelPool[ $name ] = $model;
 
@@ -69,7 +77,9 @@ class PHPF_ObjectPool
 	public function &getLibrary( $library = null )
 	{
 		if( !isset( $library ) || !array_key_exists( $library, self::$libraryPool ) )
+		{
 			return self::$null;
+		}
 
 		return self::$libraryPool[ $library ];
 	}
@@ -77,7 +87,9 @@ class PHPF_ObjectPool
 	public function &addLibrary( $name = null, &$library = null )
 	{
 		if( !isset( $name ) || !isset( $library ) )
+		{
 			return self::$null;
+		}
 
 		self::$libraryPool[ $name ] = $library;
 
@@ -86,9 +98,10 @@ class PHPF_ObjectPool
 
 	public static function &instance()
 	{
-		if( is_null( self::$instance ) || 
-			!( self::$instance instanceof PHPF_ObjectPool ) )
+		if( is_null( self::$instance ) || !( self::$instance instanceof PHPF_ObjectPool ) )
+		{
 			self::$instance = new PHPF_ObjectPool();
+		}
 
 		return self::$instance;
 	}

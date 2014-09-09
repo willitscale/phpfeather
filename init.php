@@ -1,18 +1,28 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather;
+
 error_reporting( E_ALL );
 
 ini_set( 'display_errors', '1' );
 
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 define( 'FRAMEWORK_PATH', $_SERVER[ 'DOCUMENT_ROOT' ] . '/', true );
 
-require_once( FRAMEWORK_PATH . 'config/constants.php' );
+require_once( 'config/constants.php' );
 require_once( FRAMEWORK_PATH . 'config/local.php' );
-require_once( FRAMEWORK_PATH . 'system/application.php' );
-require_once( FRAMEWORK_PATH . 'system/debugging.php' );
+
+require_once( 'system/application.php' );
+require_once( 'system/debugging.php' );
+
+require_once( 'exceptions/application.php' );
+
+use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
+use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
 ( new PHPF_INIT() );
 
@@ -27,15 +37,19 @@ class PHPF_INIT
 	{
 		try
 		{
-			PHPF_Debugging:init();
-			PHPF_Application::init();
+			SYSTEM\PHPF_Debugging::init();
+			SYSTEM\PHPF_Application::init();
 		}
-		catch( Exception $exception )
+		catch( EXCEPTIONS\PHPF_ApplicationException $exception )
+		{
+			self::debug( $exception );
+		}
+		catch( \Exception $exception )
 		{
 			self::debug( $exception );
 		}
 	}
-	
+
 	private static function debug( $exception )
 	{
 		switch( APPLICATION_RELEASE )
