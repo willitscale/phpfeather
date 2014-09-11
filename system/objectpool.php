@@ -7,6 +7,8 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 }
 
+use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+
 /**
  *	Object Pool	
  *
@@ -64,7 +66,7 @@ class PHPF_ObjectPool
 	
 	public function &addModel( $name = null, &$model = null )
 	{
-		if( !isset( $name ) || !isset( $model ) || !( $model instanceof PHPF_Model ) )
+		if( !isset( $name ) || !isset( $model ) || !( $model instanceof ABSTRACTION\PHPF_Model ) )
 		{
 			return self::$null;
 		}

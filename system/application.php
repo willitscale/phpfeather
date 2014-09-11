@@ -144,7 +144,7 @@ class PHPF_Application
 	
 	public static function autoLoad( $instance = null )
 	{
-		if( !( $instance instanceof System ) )
+		if( !( $instance instanceof ABSTRACTION\PHPF_System ) )
 		{
 			return 0;
 		}
@@ -190,21 +190,27 @@ class PHPF_Application
 
 	public static function getPath( $formattedURI, $suffix )
 	{
-		if( file_exists( $path=sprintf( $formattedURI, './', $suffix ) ) )
+
+		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', APPLICATION_PATH ), $suffix ) ) )
 		{
 			return $path;	
 		}
-	
+
+		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', PHP_FEATHER ), $suffix ) ) )
+		{
+			return $path;	
+		}
+
 		if( file_exists( $path=sprintf( $formattedURI, self::basePath(), $suffix ) ) )
 		{
 			return $path;
 		}
-
-		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', FRAMEWORK_PATH ), $suffix ) ) )
+		
+		if( file_exists( $path=sprintf( $formattedURI, './', $suffix ) ) )
 		{
 			return $path;	
 		}
-
+		
 		throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_FILE_REQUESTED );
 	}
 	
@@ -225,14 +231,14 @@ class PHPF_Application
 	 */
 	public static function &getLibrary( $library = null )
 	{
-		if( !isset( $library ) || is_null( $library ) )
+		if( empty( $library ) )
 		{
 			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_LIBRARY );
 		}
 
 		$objectPool = self::objectPool();
-
-		if( !is_null( $objectPool->getLibrary( $library ) ) )
+		
+		if( !empty( $objectPool->getLibrary( $library ) ) )
 		{
 			return $objectPool->getLibrary( $library );
 		}
@@ -240,7 +246,9 @@ class PHPF_Application
 		$path = self::getPath( LIBRARY_DIR, strtolower( $library ) );
 
 		include_once( $path );
-
+		
+		$library = LIBRARY_PREFIX . $library;
+		
 		try
 		{
 			$object = new $library();
@@ -424,9 +432,12 @@ class PHPF_Application
 				$args = $_GET[ 'u' ];
 			}
 
-			if( array_key_exists( $args, $mapping ) )
+			foreach( $mapping AS $from => $to )
 			{
-				$args = $mapping[ $args ];
+				if( false !== stripos( $args, $from ) )
+				{
+					$args = str_ireplace( $from, $to, $args );
+				}
 			}
 
 			foreach( explode( '/', $args ) AS $val )

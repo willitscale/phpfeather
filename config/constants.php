@@ -43,6 +43,7 @@ define( 'INVALID_DB_PORT', 'Invalid port attribute.', true );
 define( 'INVALID_DB_DATA', 'Invalid database attribute.', true );
 define( 'INVALID_DB_TEST', 'Invalid test attribute.', true );
 
+define( 'INVALID_CACHE_DRIVER', 'Invalid cache attribute.', true );
 define( 'INVALID_MEMCACHED', 'Memcached not installed.', true );
 define( 'INVALID_MEMCACHE', 'Memcache not installed.', true );
 define( 'INVALID_CACHE_HOST', 'Invalid cache hostname attribute.', true );
@@ -79,6 +80,12 @@ define( 'VALIDATION_COMPARE_FAIL',	0x10, true );
 
 define( 'HOUR',							3600, true );
 define( 'DAY',								86400, true );
+
+define( 'LIBRARY_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\libraries\\PHPF_', true );
+
+define( 'CACHE_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\cache\\PHPF_', true );
+define( 'CONNECTION_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\connection\\PHPF_', true );
+define( 'RESULTS_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\results\\PHPF_', true );
 
 $autoload = array();
 $helpers = array();

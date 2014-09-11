@@ -1,11 +1,17 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\drivers\results;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
-include_once( 'abstract/results.php' );
+include_once( 'abstraction/results.php' );
 
-class PHPF_MysqliResults extends PHPF_Results
+use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+
+class PHPF_MysqliResults extends ABSTRACTION\PHPF_Results
 {
 
 	public function __construct( $mysqliResults = null )
@@ -17,7 +23,9 @@ class PHPF_MysqliResults extends PHPF_Results
 	public function count()
 	{
 		if( !$this->resultSet )
+		{
 			return 0;
+		}
 		return $this->resultSet->num_rows;
 	}
 
@@ -28,12 +36,18 @@ class PHPF_MysqliResults extends PHPF_Results
 			switch( $this->returnType )
 			{
 				case RESULT_OBJECT : 
+				{
 					return $this->resultSet->fetch_object();
+				}
 				case RESULT_ARRAY : 
+				{
 					return $this->resultSet->fetch_array();
+				}
 				case RESULT_ASSOC : 
 				default :
+				{
 					return $this->resultSet->fetch_assoc();
+				}
 			}
 		}
 		return null;

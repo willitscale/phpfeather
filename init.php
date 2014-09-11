@@ -11,10 +11,8 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 }
 
-define( 'FRAMEWORK_PATH', $_SERVER[ 'DOCUMENT_ROOT' ] . '/', true );
-
 require_once( 'config/constants.php' );
-require_once( FRAMEWORK_PATH . 'config/local.php' );
+require_once( APPLICATION_PATH . 'config/local.php' );
 
 require_once( 'system/application.php' );
 require_once( 'system/debugging.php' );

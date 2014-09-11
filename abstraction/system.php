@@ -40,7 +40,7 @@ abstract class PHPF_System
 		{
 			$local = strtolower( $model );
 		}
-		$this->{$local} = PHPF_Application::getModel( $model );
+		$this->{$local} = SYSTEM\PHPF_Application::getModel( $model );
 	}
 
 	public function library( $library = null, $local = null )
@@ -49,22 +49,22 @@ abstract class PHPF_System
 		{
 			$local = strtolower( $library );
 		}
-		$this->{$local} = PHPF_Application::getLibrary( $library );
+		$this->{$local} = SYSTEM\PHPF_Application::getLibrary( $library );
 	}
 
 	public function view( $view = null, &$params = array() )
 	{
-		return PHPF_Application::getView( $view, $params );
+		return SYSTEM\PHPF_Application::getView( $view, $params );
 	}
 
 	public function helper( $helper = null )
 	{
-		return PHPF_Application::getHelper( $helper );
+		return SYSTEM\PHPF_Application::getHelper( $helper );
 	}
 	
 	public function render( $view = null, &$params = array() )
 	{
-		print( PHPF_Application::getView( $view, $params ) );
+		print( SYSTEM\PHPF_Application::getView( $view, $params ) );
 	}
 
 }

@@ -1,11 +1,11 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\exceptions;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
 {
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
 }
-
-namespace uk\co\n3tw0rk\phpfeather\exceptions;
 
 /**
  *	Session Exception
@@ -16,4 +16,4 @@ namespace uk\co\n3tw0rk\phpfeather\exceptions;
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_SessionException extends Exception{}
+class PHPF_SessionException extends \Exception{}

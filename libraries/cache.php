@@ -1,9 +1,16 @@
 <?php
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+namespace uk\co\n3tw0rk\phpfeather\libraries;
 
-@include_once( 'exceptions/cache.php' );
+if( !defined( 'SYSTEM_ACCESS' ) )
+{
+	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
+
+include_once( 'exceptions/cache.php' );
+
+use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
+use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
 class PHPF_Cache
 {
@@ -19,30 +26,41 @@ class PHPF_Cache
 	{
 		global $cached;
 		foreach( $cached AS $local => $attributes )
+		{
 			$this->createInstance( $local, $attributes );
+		}
 	}
 	
 	public function createInstance( $name = null, $attributes = array() )
 	{
-		if( is_null( $name ) )
+		if( empty( $name ) )
+		{
 			$name = 'default';
+		}
 		
 		if( !is_array( $attributes ) )
-			throw new PHPF_CacheException( INVALID_ATTRIBUTES );
+		{
+			throw new EXCEPTIONS\PHPF_CacheException( INVALID_ATTRIBUTES );
+		}
 
-		$path = PHPF_Application::getPath( DRIVER_CACHE_DIR, strtolower( $attributes[ 'driver' ] ) );
+		if( !array_key_exists( 'driver', $attributes ) )
+		{
+			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_CACHE_DRIVER );
+		}
 
-		@include_once( $path );
+		$path = SYSTEM\PHPF_Application::getPath( DRIVER_CACHE_DIR, strtolower( $attributes[ 'driver' ] ) );
+
+		include_once( $path );
 
 		try
 		{
-			$class = sprintf( '%sDriver', ucfirst( $attributes[ 'driver' ] ) );
+			$class = CACHE_DRIVER_PREFIX . ucfirst( $attributes[ 'driver' ] ) . 'Driver';
 			
 			$this->instances[ $name ] = new $class( $attributes );
 		}
 		catch( Exception $e )
 		{
-			throw new PHPF_CacheException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
+			throw new EXCEPTIONS\PHPF_CacheException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
 		}
 		
 		$this->instances[ $name ]->connect();
@@ -52,9 +70,11 @@ class PHPF_Cache
 	
 	public function setCurrentInstance( $instanceName = null )
 	{
-		if( !isset( $instanceName ) || is_null( $instanceName ) || !array_key_exists( $instanceName ) )
+		if( !empty( $instanceName ) || !array_key_exists( $instanceName ) )
+		{
 			return 0;
-		
+		}
+
 		$this->currentInstance = $instanceName;
 		
 		return 1;

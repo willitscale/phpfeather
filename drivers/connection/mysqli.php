@@ -1,12 +1,18 @@
 <?php
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+namespace uk\co\n3tw0rk\phpfeather\drivers\connection;
 
-include_once( 'abstract/connection.php' );
+if( !defined( 'SYSTEM_ACCESS' ) )
+{
+	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
+
+include_once( 'abstraction/connection.php' );
 include_once( 'drivers/results/mysqli.php' );
 
-class PHPF_MysqliDriver extends PHPF_Connection
+use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+
+class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 {
 
 	private $host;
@@ -26,7 +32,7 @@ class PHPF_MysqliDriver extends PHPF_Connection
 
 	public function connect()
 	{
-		$this->connection = new mysqli( $this->host, $this->user, $this->pass, $this->data, $this->port );
+		$this->connection = new \mysqli( $this->host, $this->user, $this->pass, $this->data, $this->port );
 		if( 0 !== @$this->connection->connect_errno )
 			throw new DatabaseException( INVALID_DB_CREDENTIALS );
 		else

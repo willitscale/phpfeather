@@ -16,7 +16,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class PHPF_Results implements Countable, Iterator
+abstract class PHPF_Results implements \Countable, \Iterator
 {
 
 	protected $resultSet;
