@@ -11,7 +11,16 @@ include_once( 'exceptions/database.php' );
 
 use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
 use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
-	
+
+/**
+ *	Database Library
+ *
+ *	@version 0.0.1
+ *	@package libraries\database
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
 class PHPF_Database
 {
 

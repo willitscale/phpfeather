@@ -12,9 +12,11 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 }
 
 require_once( 'config/constants.php' );
+
 require_once( APPLICATION_PATH . 'config/local.php' );
 
 require_once( 'system/application.php' );
+
 require_once( 'system/debugging.php' );
 
 require_once( 'exceptions/application.php' );

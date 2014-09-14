@@ -12,25 +12,53 @@ include_once( 'exceptions/cache.php' );
 use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
 use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
+/**
+ *	Cache Library
+ *
+ *	@version 0.0.1
+ *	@package libraries\cache
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
 class PHPF_Cache
 {
+	/** */
 	private $instances = array();
-	private $currentInstance;
 
+	/** */
+	private $currentInstance;
+	
+	/**
+	 * Constructor Sub-Routine
+	 */
 	public function __construct()
 	{
 		$this->autoloadCaches();
 	}
-
+	
+	/**
+	 * Autoload Caches Method
+	 *
+	 * @return Mixed
+	 */
 	public function autoloadCaches()
 	{
 		global $cached;
+
 		foreach( $cached AS $local => $attributes )
 		{
 			$this->createInstance( $local, $attributes );
 		}
 	}
 	
+	/**
+	 * Create Instance Method
+	 *
+	 * @param String
+	 * @param Array
+	 * @return Mixed
+	 */
 	public function createInstance( $name = null, $attributes = array() )
 	{
 		if( empty( $name ) )
@@ -68,6 +96,12 @@ class PHPF_Cache
 		$this->currentInstance = $name;
 	}
 	
+	/**
+	 * Set Current Instance Method
+	 *
+	 * @param String
+	 * @return Mixed
+	 */
 	public function setCurrentInstance( $instanceName = null )
 	{
 		if( !empty( $instanceName ) || !array_key_exists( $instanceName ) )
@@ -80,28 +114,47 @@ class PHPF_Cache
 		return 1;
 	}
 	
+	/**
+	 * Get Method
+	 *
+	 * @return Mixed
+	 */
 	public function get()
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'get' ), $params );
 	}
 	
+	/**
+	 * Set Method
+	 *
+	 * @return Mixed
+	 */
 	public function set()
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'set' ), $params );
 	}
 	
+	/**
+	 * Exists Method
+	 *
+	 * @return Mixed
+	 */
 	public function exists()
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'exists' ), $params );
 	}
 	
+	/**
+	 * Flush Method
+	 *
+	 * @return Mixed
+	 */
 	public function flush()
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'flush' ), $params );
 	}
-
 }

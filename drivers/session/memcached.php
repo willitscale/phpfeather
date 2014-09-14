@@ -9,7 +9,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 
 include_once( 'abstract/session.php' );
 
-class PHPF_CookieDriver extends PHPF_Session
+class PHPF_MemcachedDriver extends PHPF_Session
 {
 
 }

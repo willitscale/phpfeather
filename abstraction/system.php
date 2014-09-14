@@ -21,7 +21,7 @@ use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
 abstract class PHPF_System
 {
 	/**
-	 *
+	 * Constructor Sub-Routine
 	 */
 	public function __construct()
 	{
@@ -30,41 +30,70 @@ abstract class PHPF_System
 	/**
 	 * Model Method
 	 *
-	 * @param 
-	 * @param 
+	 * @param String
+	 * @param String
 	 * @return void
 	 */
 	public function model( $model = null, $local = null )
 	{
-		if( is_null( $local ) )
+		if( empty( $local ) )
 		{
 			$local = strtolower( $model );
 		}
+
 		$this->{$local} = SYSTEM\PHPF_Application::getModel( $model );
 	}
 
+	/**
+	 * Library Method
+	 *
+	 * @param String
+	 * @param String
+	 * @return void
+	 */
 	public function library( $library = null, $local = null )
 	{
-		if( is_null( $local ) )
+		if( empty( $local ) )
 		{
 			$local = strtolower( $library );
 		}
+
 		$this->{$local} = SYSTEM\PHPF_Application::getLibrary( $library );
 	}
 
+	/**
+	 * View Method
+	 *
+	 * @param String
+	 * @param String
+	 * @return String
+	 */
 	public function view( $view = null, &$params = array() )
 	{
 		return SYSTEM\PHPF_Application::getView( $view, $params );
 	}
 
+        /**
+         * Helper Method
+         *
+         * @param String
+         * @return Mixed 
+         */
 	public function helper( $helper = null )
 	{
 		return SYSTEM\PHPF_Application::getHelper( $helper );
 	}
 	
+        /**
+         * Render Method
+         *
+         * @param String
+         * @param Array
+         * @return void
+         */
 	public function render( $view = null, &$params = array() )
 	{
 		print( SYSTEM\PHPF_Application::getView( $view, $params ) );
 	}
-
 }
+
