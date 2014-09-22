@@ -11,44 +11,43 @@ include_once( 'abstraction/connection.php' );
 include_once( 'drivers/results/mysqli.php' );
 
 use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
 class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 {
-
-	private $host;
-	private $user;
-	private $pass;
-	private $data;
-	private $port;
-
-	public function __construct( $host = 'localhost', $user = 'root', $pass = '', $data = '', $port = 3306 )
-	{
-		$this->host = $host;
-		$this->user = $user;
-		$this->pass = $pass;
-		$this->data = $data;
-		$this->port = $port;
-	}
-
 	public function connect()
 	{
-		$this->connection = new \mysqli( $this->host, $this->user, $this->pass, $this->data, $this->port );
+		if( !class_exists( 'mysqli' ) )
+		{
+			throw new EXCEPTIONS\PHPF_DatabaseException( MYSQLI_NOT_INSTALLED );
+		}
+		
+		$this->connection = new \mysqli( $this->host, $this->user, 
+			$this->pass, $this->data, $this->port );
+
 		if( 0 !== @$this->connection->connect_errno )
+		{
 			throw new DatabaseException( INVALID_DB_CREDENTIALS );
+		}
 		else
+		{
 			$this->connected = true;
+		}
 	}
 
 	public function disconnect()
 	{
 		if( $this->connected )
+		{
 			$this->connection->close();
+		}
 	}
 
 	public function query()
 	{
 		$params = func_get_args();
-		return new MysqliResults( $this->connection->query( call_user_func_array( array( $this, 'queryString' ), $params ) ) );
+		return new MysqliResults( $this->connection->query( 
+			call_user_func_array( array( $this, 'queryString' ), $params ) ) );
 	}
 
 	public function info()
@@ -70,5 +69,4 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 	{
 		return $this->connection->insert_id;
 	}
-
 }

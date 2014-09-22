@@ -20,7 +20,16 @@ $database[ 'local' ][ 'user' ] = '';
 $database[ 'local' ][ 'pass' ] = '';
 $database[ 'local' ][ 'data' ] = '';
 $database[ 'local' ][ 'test' ] = false;
-	
+
+$autoload[ 'mongo' ][ 'driver' ] = 'mongodb';
+$autoload[ 'mongo' ][ 'host' ] = '/tmp/mongodb-27017.sock';
+$autoload[ 'mongo' ][ 'port' ] = '';
+$autoload[ 'mongo' ][ 'user' ] = '';
+$autoload[ 'mongo' ][ 'pass' ] = '';
+$autoload[ 'mongo' ][ 'data' ] = '';
+$autoload[ 'mongo' ][ 'test' ] = false;
+$autoload[ 'mongo' ][ 'options' ] = array();
+
 $autoload[ 'cache' ] = 'Cache';
 
 $cached[ 'local' ][ 'host' ] = '127.0.0.1';

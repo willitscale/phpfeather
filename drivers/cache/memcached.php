@@ -39,7 +39,7 @@ class PHPF_MemcachedDriver extends ABSTRACTION\PHPF_Cached
 	
 	public function connect()
 	{
-		$this->object = new Memcached();
+		$this->object = new \Memcached();
 		$this->object->addServer( $this->attributes[ 'host' ], $this->attributes[ 'port' ] );
 	}
 	

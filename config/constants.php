@@ -42,6 +42,12 @@ define( 'INVALID_DB_HOST', 'Invalid hostname attribute.', true );
 define( 'INVALID_DB_PORT', 'Invalid port attribute.', true );
 define( 'INVALID_DB_DATA', 'Invalid database attribute.', true );
 define( 'INVALID_DB_TEST', 'Invalid test attribute.', true );
+define( 'INVALID_DB_EXTRAS', 'Invalid extras attribute.', true );
+
+define( 'MYSQLI_NOT_INSTALLED', 'MySQLi is not installed.', true );
+define( 'MONGO_DB_NOT_INSTALLED', 'MongoDB is not installed.', true );
+
+define( 'DATABASE_NOT_EXISTS', 'The database specified does not exist.', true );
 
 define( 'INVALID_CACHE_DRIVER', 'Invalid cache attribute.', true );
 define( 'INVALID_MEMCACHED', 'Memcached not installed.', true );

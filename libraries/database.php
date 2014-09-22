@@ -89,6 +89,11 @@ class PHPF_Database
 			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_TEST );
 		}
 
+		if( !array_key_exists( 'extr', $attributes ) )
+		{
+			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_EXTRAS );
+		}
+
 		$path = SYSTEM\PHPF_Application::getPath( DRIVER_DB_DIR, strtolower( $attributes[ 'driver' ] ) );
 
 		include_once( $path );
@@ -98,7 +103,7 @@ class PHPF_Database
 			$class = CONNECTION_DRIVER_PREFIX . ucfirst( $attributes[ 'driver' ] ) . 'Driver';
 			
 			$this->instances[ $name ] = new $class( $attributes[ 'host' ], $attributes[ 'user' ], $attributes[ 'pass' ], 
-				$attributes[ 'data' ], $attributes[ 'port' ] );
+				$attributes[ 'data' ], $attributes[ 'port' ], $attributes[ 'extr' ] );
 		}
 		catch( Exception $e )
 		{
