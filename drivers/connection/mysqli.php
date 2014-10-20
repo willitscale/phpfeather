@@ -12,6 +12,7 @@ include_once( 'drivers/results/mysqli.php' );
 
 use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
 use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use uk\co\n3tw0rk\phpfeather\drivers\results AS RESULTS;
 
 class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 {
@@ -46,7 +47,7 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 	public function query()
 	{
 		$params = func_get_args();
-		return new MysqliResults( $this->connection->query( 
+		return new RESULTS\PHPF_MysqliResults( $this->connection->query( 
 			call_user_func_array( array( $this, 'queryString' ), $params ) ) );
 	}
 

@@ -109,15 +109,28 @@ class PHPF_Application
 			return self::$controller;
 		}
 
-		if( is_null( $controller ) || 0 >= sizeof( $controller ) )
+
+		if( array_key_exists( 'TERM', $_SERVER ) || array_key_exists( 'TERM', $_SERVER ) )
 		{
-			$controller = self::getUrlParam( 1 );
+			if( empty( $controller ) )
+			{
+				$controller = self::getShellParam( 1 );
+			}
+		}
+		else
+		{
+			if( empty( $controller ) )
+			{
+				$controller = self::getUrlParam( 1 );
+			}
 		}
 
 		if( is_null( $controller ) )
 		{
 			$controller = DEFAULT_CONTROLLER;
 		}
+		
+		var_dump( $controller );
 		
 		return ( self::$controller = $controller );
 	}
@@ -129,15 +142,32 @@ class PHPF_Application
 			return self::$action;
 		}
 
-		if( is_null( $action ) )
+		if( array_key_exists( 'TERM', $_SERVER ) || array_key_exists( 'TERM', $_SERVER ) )
 		{
-			$action = self::getUrlParam( 2 );
-		}
+			if( empty( $action ) )
+			{
+				$action = self::getShellParam( 2 );
+			}
 
-		if( is_null( $action ) )
-		{
-			$action = DEFAULT_ACTION;
+			if( empty( $action ) )
+			{
+				$action = SHELL_DEFAULT_ACTION;
+			}
 		}
+		else
+		{
+			if( empty( $action ) )
+			{
+				$action = self::getUrlParam( 2 );
+			}
+
+			if( empty( $action ) )
+			{
+				$action = DEFAULT_ACTION;
+			}
+		}
+		
+		var_dump( $action );
 
 		return ( self::$action = $action );
 	}
@@ -267,7 +297,7 @@ class PHPF_Application
 
 	public static function &getModel( $model = null )
 	{
-		if( !isset( $model ) || is_null( $model ) )
+		if( empty( $model ) )
 		{
 			throw new PHPF_ApplicationException( INVALID_MODEL );
 		}
@@ -281,7 +311,7 @@ class PHPF_Application
 
 		$path = self::getPath( MODEL_DIR, strtolower( $model ) );
 
-		@include_once( $path );
+		require_once( $path );
 
 		try
 		{
@@ -296,7 +326,7 @@ class PHPF_Application
 			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
 		}
 
-		if( !( $object instanceof Model ) )
+		if( !( $object instanceof ABSTRACTION\PHPF_Model ) )
 		{
 			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_MODEL );
 		}
@@ -307,7 +337,7 @@ class PHPF_Application
 	public static function getHelper( $helper )
 	{
 
-		if( !isset( $helper ) || is_null( $helper ) )
+		if( empty( $helper ) )
 		{
 			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_HELPER );
 		}
@@ -319,7 +349,7 @@ class PHPF_Application
 
 	public static function &getView( $view = null, &$flags = array() )
 	{
-		if( !isset( $view ) || is_null( $view ) )
+		if( empty( $view ) )
 		{
 			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_VIEW );
 		}
@@ -412,10 +442,25 @@ class PHPF_Application
 
 		return $array;
 	}
+	
+	public static function getShellParam( $param = 0 )
+	{
+		if( empty( $param ) )
+		{
+			return null;
+		}
+
+		if( $param >= $_SERVER[ 'argc' ] )
+		{
+			return null;
+		}
+
+		return $_SERVER[ 'argv' ][ $param ];
+	}
 
 	public static function getUrlParam( $param = 0 )
 	{
-		if( !isset( $param ) || 0 >= $param-- )
+		if( empty( $param-- ) )
 		{
 			return null;
 		}

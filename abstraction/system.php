@@ -20,6 +20,8 @@ use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
  */
 abstract class PHPF_System
 {
+	protected $params = array();
+	
 	/**
 	 * Constructor Sub-Routine
 	 */
@@ -93,6 +95,13 @@ abstract class PHPF_System
          */
 	public function render( $view = null, &$params = array() )
 	{
+		if( !is_array( $params ) )
+		{
+			$params = $this->params;
+		}
+
+		$params = array_merge( $this->params, $params );
+		
 		print( SYSTEM\PHPF_Application::getView( $view, $params ) );
 	}
 }

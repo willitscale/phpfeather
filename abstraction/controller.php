@@ -23,8 +23,6 @@ use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
  */
 abstract class PHPF_Controller extends PHPF_System
 {
-
-	protected $params = array();
 	protected $controller;
 	protected $action;
 
@@ -39,5 +37,18 @@ abstract class PHPF_Controller extends PHPF_System
 		$this->params[ 'action' ] = $this->action;
 	}
 
+	/**
+	 * Default HTTP init method
+	 */
 	abstract public function init();
+
+	/**
+	 * Default shell init method
+	 */
+	abstract public function __init();
+
+	/**
+	 * Default test init method
+	 */
+	abstract public function __t__init();
 }

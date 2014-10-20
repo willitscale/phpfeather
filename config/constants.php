@@ -59,6 +59,7 @@ define( 'INVALID_DB_CREDENTIALS', 'Invalid database credentials have been provid
 
 define( 'DEFAULT_CONTROLLER', 'index', true );
 define( 'DEFAULT_ACTION', 'init', true );
+define( 'SHELL_DEFAULT_ACTION', '__init', true );
 define( 'DEFAULT_INDEX',			'index.php', true );
 
 define( 'RESULT_OBJECT',			0x01, true );

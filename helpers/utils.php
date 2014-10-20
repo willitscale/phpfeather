@@ -15,7 +15,7 @@ class PHPF_UTILS
 {
 	public static function escape( $string = null )
 	{
-		if( empty( $string )
+		if( empty( $string ) )
 		{
 			return null;
 		}
@@ -112,3 +112,4 @@ class PHPF_UTILS
 
 		return call_user_func_array( 'sprintf', $args );
 	}
+}

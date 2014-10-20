@@ -7,6 +7,8 @@ if( !defined( 'SYSTEM_ACCESS' ) )
     trigger_error( 'Unable to access application.', E_USER_ERROR );
 }
 
+require_once( 'helpers/utils.php' );
+
 /**
  *	Connection
  *
@@ -52,7 +54,8 @@ abstract class PHPF_Connection
 
 	public function queryString()
 	{
-		return forward_static_call_array( array( 'PHPF_UTILS', 'qprintf' ), $args );
+		$args = func_get_args();
+		return forward_static_call_array( array( 'uk\co\n3tw0rk\phpfeather\helpers\PHPF_UTILS', 'qprintf' ), $args );
 	}
 	
 	public function testConnection()
