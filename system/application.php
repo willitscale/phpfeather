@@ -130,8 +130,6 @@ class PHPF_Application
 			$controller = DEFAULT_CONTROLLER;
 		}
 		
-		var_dump( $controller );
-		
 		return ( self::$controller = $controller );
 	}
 	
@@ -166,8 +164,6 @@ class PHPF_Application
 				$action = DEFAULT_ACTION;
 			}
 		}
-		
-		var_dump( $action );
 
 		return ( self::$action = $action );
 	}
