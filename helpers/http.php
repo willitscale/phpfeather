@@ -1,7 +1,11 @@
 <?php
 
+namespace uk\co\n3tw0rk\phpfeather\helpers;
+
 if( !defined( 'SYSTEM_ACCESS' ) )
+{
 	trigger_error( 'Unable to access application.', E_USER_ERROR );
+}
 
 /**
  *	HTTP
@@ -57,16 +61,67 @@ class PHPF_HTTP
 			'504'	=>	'Gateway Timeout',
 			'505'	=>	'HTTP Version Not Supported' );
 
-	public static function redirect( $url, $httpCode = '307' )
+	public static function REDIRECT( $url, $httpCode = '307' )
 	{
 		header( sprintf( 'Location: %s', $url ) );
 		header( sprintf( 'Status: %s %s', $httpCode, HTTP::$codes[ $httpCode ] ) );
 		header( sprintf( 'HTTP/1.0 %s %s', $httpCode, HTTP::$codes[ $httpCode ] ) );
 	}
 	
-	public static function ip()
+	public static function IP()
 	{
 		return $_SERVER[ 'REMOTE_ADDR' ];
 	}
+	
+	public static function URL( $params = array(), $full = false )
+	{
+		$urn = '';
 
+		if( isset( $_GET[ 'u' ] ) )
+		{
+			$urn = $_GET[ 'u' ];
+			unset( $_GET[ 'u' ] );
+		}
+		
+		if( empty( $params ) )
+		{
+			$params = $_GET;
+		}
+		else
+		{
+			$params = array_merge( $_GET, $params );
+		}
+		
+		$queryString = '';
+		
+		if( !empty( $params ) )
+		{
+			$queryString = '?';
+			foreach( $params AS $key => $value )
+			{
+				if( '?' !== $queryString )
+				{
+					$queryString .= '&';
+				}
+	
+				$queryString .= $key . '=' . $value;
+			}
+		}
+
+		if( !$full )
+		{
+			return $urn . $queryString;
+		}
+		
+		$protocol = 'http';
+		
+		if( isset( $_GET[ 'HTTPS' ] ) )
+		{
+			$protocol = 'https';
+		}
+
+		$uri = $_SERVER[ 'HTTP_HOST' ] . $urn;
+		
+		return $protocol . '://' . $uri . $queryString;
+	}
 }

@@ -46,9 +46,4 @@ abstract class PHPF_Controller extends PHPF_System
 	 * Default shell init method
 	 */
 	abstract public function __init();
-
-	/**
-	 * Default test init method
-	 */
-	abstract public function __t__init();
 }

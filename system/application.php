@@ -88,12 +88,12 @@ class PHPF_Application
 	
 	public static function autoHelpers()
 	{
-		
 		global $helpers;
 		
 		foreach( $helpers AS $helper )
+		{
 			self::getHelper( $helper );
-	
+		}
 	}
 	
 	/**
