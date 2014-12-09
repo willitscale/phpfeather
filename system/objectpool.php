@@ -38,6 +38,8 @@ class PHPF_ObjectPool
 	 */
 	private static $libraryPool = array();
 
+	private static $restPool = array();
+
 	/**
 	 *	@access private
 	 *	@var null
@@ -96,6 +98,28 @@ class PHPF_ObjectPool
 		self::$libraryPool[ $name ] = $library;
 
 		return self::$libraryPool[ $name ];
+	}
+
+	public function getRest( $rest = null )
+	{
+		if( !isset( $rest ) || !array_key_exists( $rest, self::$restPool ) )
+		{
+			return self::$null;
+		}
+
+		return self::$restPool[ $rest ];
+	}
+
+	public function &addRest( $name = null, &$rest = null )
+	{
+		if( !isset( $name ) || !isset( $rest ) )
+		{
+			return self::$null;
+		}
+
+		self::$restPool[ $name ] = $library;
+
+		return self::$restPool[ $name ];
 	}
 
 	public static function &instance()

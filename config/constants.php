@@ -12,6 +12,7 @@ define( 'TESTING', 0x02, true );
 define( 'PRODUCTION',  0x03, true );
 
 define( 'INVALID_CONTROLLER',  'Invalid controller requested.', true );
+define( 'INVALID_REST',  'Invalid rest requested.', true );
 define( 'INVALID_MODEL',  'Invalid model requested.', true );
 define( 'INVALID_LIBRARY',  'Invalid library requested.', true );
 define( 'INVALID_VIEW',  'Invalid view requested.', true );
@@ -20,6 +21,7 @@ define( 'INVALID_HELPER', 'Invalid helper requested.', true );
 define( 'INVALID_ATTRIBUTES', 'Invalid Attributed Passed', true );
 
 define( 'CONTROLLER_NOT_EXIST', 'Controller class `%s` has thrown an error.', true );
+define( 'REST_NOT_EXIST', 'Rest class `%s` has thrown an error.', true );
 define( 'MODEL_NOT_EXIST', 'Model class `%s` has thrown an error.', true );
 define( 'LIBRARY_NOT_EXIST', 'Library class `%s` has thrown an error.', true );
 define( 'DRIVER_NOT_EXIST', 'Driver class `%s` has thrown an error.', true );
@@ -29,6 +31,7 @@ define( 'MODEL_DIR', '%smodels/%s.php', true );
 define( 'LIBRARY_DIR', '%slibraries/%s.php', true );
 define( 'VIEW_DIR',	 '%sviews/%s.php', true );
 define( 'HELPER_DIR', '%shelpers/%s.php', true );
+define( 'REST_DIR', '%srest/%s.php', true );
 define( 'DRIVER_DB_DIR', '%sdrivers/connection/%s.php', true );
 define( 'DRIVER_RES_DIR', '%sdrivers/results/%s.php', true );
 define( 'DRIVER_SES_DIR', '%sdrivers/session/%s.php', true );

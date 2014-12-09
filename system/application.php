@@ -10,6 +10,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
 require_once( 'system/objectpool.php' );
 
 require_once( 'abstraction/controller.php' );
+require_once( 'abstraction/restfulcontroller.php' );
 require_once( 'abstraction/model.php' );
 
 require_once( 'exceptions/application.php' );
@@ -74,12 +75,19 @@ class PHPF_Application
 		$object = self::getController( $controller );
 
 		unset( $controller );
-		
-		$action = self::getActionString( $action );
-		
-		if( 1 == self::canAccessAction( $object, $action ) )
+
+		if( !( $object instanceof ABSTRACTION\PHPF_RestfulController ) )
 		{
-			$object->$action();
+			$action = self::getActionString( $action );
+		
+			if( 1 == self::canAccessAction( $object, $action ) )
+			{
+				$object->$action();
+			}
+		}
+		else
+		{
+			$object->init();
 		}
 
 		unset( $action );
@@ -366,7 +374,7 @@ class PHPF_Application
 		}
 
 		ob_start();
-		include( $path );
+		require( $path );
 		$contents = ob_get_contents();
 		ob_end_clean();
 
@@ -375,14 +383,16 @@ class PHPF_Application
 
 	public static function &getController( $controller = null )
 	{
-		if( !isset( $controller ) || is_null( $controller ) )
+		if( empty( $controller ) )
 		{
-			throw new PHPF_ApplicationException( INVALID_CONTROLLER );
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_CONTROLLER );
 		}
 
 		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
 
-		include_once( $path );
+		require_once( $path );
+
+		$object = null;
 
 		try
 		{
@@ -394,7 +404,7 @@ class PHPF_Application
 			{
 				self::exceptionHandler( $e );
 			}
-			throw new PHPF_ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
+			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
 		}
 
 		if( !( $object instanceof ABSTRACTION\PHPF_Controller ) )
@@ -403,6 +413,42 @@ class PHPF_Application
 		}
 
 		return $object;
+	}
+
+
+	public static function &getRest( $rest = null )
+	{
+		if( empty( $rest ) )
+		{
+			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_REST ) ;
+		}
+
+		$path = self::getPath( REST_DIR, strtolower( $rest ) );
+
+		require_once( $path );
+
+		$object = null;
+
+		try
+		{
+			$object  = new $rest;
+		}
+		catch( Exception $e )
+		{
+			if( APPLICATION_RELEASE == DEVELOPMENT )
+			{
+				self::exceptionHandler( $e );
+			}
+
+			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( REST_NOT_EXIST, $controller ) );
+		}
+
+                if( !( $object instanceof ABSTRACTION\PHPF_Rest ) )
+                {
+                        throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_REST );
+                }
+
+                return $object;
 	}
 
 	public static function &arrayToObject( $array )

@@ -22,7 +22,7 @@ class PHPF_MysqliResults extends ABSTRACTION\PHPF_Results
 
 	public function count()
 	{
-		if( !$this->resultSet )
+		if( empty( $this->resultSet ) )
 		{
 			return 0;
 		}

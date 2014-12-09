@@ -24,6 +24,8 @@ use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
  */
 class PHPF_MemcachedDriver extends ABSTRACTION\PHPF_Cached
 {
+	private $prefix = "";
+	private $suffix = "";
 
 	public function __construct( $attributes = array() )
 	{
@@ -43,6 +45,16 @@ class PHPF_MemcachedDriver extends ABSTRACTION\PHPF_Cached
 		}
 
 		$this->attributes = $attributes;
+
+		if( !empty( $this->attributes[ 'prefix' ] ) )
+		{
+			$this->prefix = $this->attributes[ 'prefix' ];
+		}
+
+		if( !empty( $this->attributes[ 'suffix' ] ) )
+		{
+			$this->suffix = $this->attributes[ 'suffix' ];
+		}
 	}
 	
 	public function connect()
@@ -58,22 +70,22 @@ class PHPF_MemcachedDriver extends ABSTRACTION\PHPF_Cached
 	
 	public function set( $key, $value, $expiry = 86400 )
 	{
-		return $this->object->set( $key, serialize( $value ), $expiry );
+		return $this->object->set( $this->prefix . $key . $this->suffix, serialize( $value ), $expiry );
 	}
 	
 	public function remove( $key )
 	{
-		return $this->object->delete( $key );
+		return $this->object->delete( $this->prefix . $key . $this->suffix );
 	}
 	
 	public function exists( $key )
 	{
-		return ( false !== $this->object->get( $key ) );
+		return ( false !== $this->object->get( $this->prefix . $key . $this->suffix ) );
 	}
 	
 	public function get( $key )
 	{
-		$data = $this->object->get( $key );
+		$data = $this->object->get( $this->prefix . $key . $this->suffix );
 
 		if( false === $data )
 		{
@@ -90,7 +102,7 @@ class PHPF_MemcachedDriver extends ABSTRACTION\PHPF_Cached
 	
 	public function replace( $key, $value, $expiry = 86400 )
 	{
-		return $this->object->replace( $key, $value );
+		return $this->object->replace( $this->prefix . $key . $this->suffix, $value );
 	}
 
 }
