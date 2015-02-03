@@ -28,12 +28,19 @@ abstract class PHPF_Connection
 	protected $port;
 	protected $extras;
 	
+	/** Connection Resource */
 	protected $connection;
+	
+	/** Connected Flag */
 	protected $connected = false;
+	
+	/** Database Instance */
+	protected $databaseInstance = null;
 
 	abstract public function connect();
 	abstract public function disconnect();
 	
+	abstract public function exec();
 	abstract public function query();
 	abstract public function info();
 	abstract public function error();

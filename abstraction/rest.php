@@ -23,9 +23,17 @@ use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
  */
 abstract class PHPF_Rest extends PHPF_System
 {
-	abstract public function _GET( $id = 0 );
-	abstract public function _POST( $id = 0 );
-	abstract public function _DELETE( $id = 0 );
-	abstract public function _PUT( $id = 0 );
-	abstract public function _PATCH( $id = 0 );
+	protected $id;
+	protected $child;
+
+	abstract public function _GET();
+	abstract public function _POST();
+	abstract public function _DELETE();
+	abstract public function _PUT();
+	abstract public function _PATCH();
+	
+	public function setID( $id )
+	{
+		$this->id = $id;
+	}
 }

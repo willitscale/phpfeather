@@ -16,6 +16,12 @@ use uk\co\n3tw0rk\phpfeather\drivers\results AS RESULTS;
 
 class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 {
+
+	/**
+	 * Connect Method
+	 *
+	 * @throws PHPF_DatabaseException
+	 */
 	public function connect()
 	{
 		if( !class_exists( 'mysqli' ) )
@@ -28,7 +34,7 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 
 		if( 0 !== @$this->connection->connect_errno )
 		{
-			throw new DatabaseException( INVALID_DB_CREDENTIALS );
+			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_CREDENTIALS );
 		}
 		else
 		{
@@ -49,6 +55,35 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 		$params = func_get_args();
 		return new RESULTS\PHPF_MysqliResults( $this->connection->query( 
 			call_user_func_array( array( $this, 'queryString' ), $params ) ) );
+	}
+	
+	public function exec()
+	{
+		$params = func_get_args();
+
+		$results = new \StdClass();
+		$results->out = array();
+		$results->returned = array();
+		$results->query = 'CALL ' . $params[ 0 ] . '(' . $params[ 1 ] . ');';
+
+		$this->connection->multi_query( $results->query );
+
+		do
+		{
+			$result = $this->connection->store_result();
+			if( $result )
+			{
+				$multiResult = new RESULTS\PHPF_MysqliResults( $result );
+				$results->returned []= $multiResult->current();
+				$result->free();
+			}
+		}
+		while( $this->connection->more_results() &&
+				$this->connection->next_result() );
+
+		$results->out = $this->query( 'SELECT ' . $params[ 1 ] )->current();
+
+		return $results;
 	}
 
 	public function info()

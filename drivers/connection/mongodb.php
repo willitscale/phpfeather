@@ -16,8 +16,11 @@ use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
 
 class PHPF_MongodbDriver extends ABSTRACTION\PHPF_Connection
 {
-	protected $databaseInstance = null;
-
+	/**
+	 * Connect Method
+	 *
+	 * @throws PHPF_DatabaseException
+	 */
 	public function connect()
 	{
 		if( !class_exists( 'MongoClient' ) )
@@ -50,7 +53,7 @@ class PHPF_MongodbDriver extends ABSTRACTION\PHPF_Connection
 		}
 		catch( Exception $exception )
 		{
-			throw new DatabaseException( INVALID_DB_CREDENTIALS );
+			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_CREDENTIALS );
 		}
 		
 		try
@@ -59,7 +62,7 @@ class PHPF_MongodbDriver extends ABSTRACTION\PHPF_Connection
 		}
 		catch( Exception $exception )
 		{
-			throw new DatabaseException( DATABASE_NOT_EXISTS );
+			throw new EXCEPTIONS\PHPF_DatabaseException( DATABASE_NOT_EXISTS );
 		}
 		
 		$this->connected = true;
@@ -78,6 +81,8 @@ class PHPF_MongodbDriver extends ABSTRACTION\PHPF_Connection
 		$params = func_get_args();
 		return $this->databaseInstance->command( $params );
 	}
+	
+	public function exec(){}
 
 	public function info()
 	{

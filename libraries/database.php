@@ -125,6 +125,13 @@ class PHPF_Database
 		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'query' ), $params );
 	}
 	
+	public function exec()
+	{
+		$this->testConnection();
+		$params = func_get_args();
+		return call_user_func_array( array( $this->instances[ $this->currentInstance ], 'exec' ), $params );
+	}
+	
 	public function queryString()
 	{
 		$this->testConnection();

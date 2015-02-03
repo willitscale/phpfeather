@@ -36,11 +36,17 @@ abstract class PHPF_RestfulController extends PHPF_Controller
 	{
 		$name = SYSTEM\PHPF_Application::getUrlParam( 2 );
 		$id = SYSTEM\PHPF_Application::getUrlParam( 3 );
+		
 		$rest = SYSTEM\PHPF_Application::getRest( $name );
 
 		if( empty( $_SERVER[ 'REQUEST_METHOD' ] ) )
 		{
-			// Throw Exception ?
+			// TODO: Throw Exception
+		}
+
+		if( !empty( $id ) )
+		{
+			$rest->setID( $id );
 		}
 
 		$method = '_' . $_SERVER[ 'REQUEST_METHOD' ];
