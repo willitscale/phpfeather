@@ -62,14 +62,23 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 		$params = func_get_args();
 
 		$table = array_shift( $params );
-		$params = call_user_func_array( array( $this, 'queryString' ), $params );
+		
+		if( !empty( $params ) )
+		{
+			$params = call_user_func_array( array( $this, 'queryString' ), $params );
+		}
+		else
+		{
+			$params = '';
+		}
 
 		$results = new \StdClass();
-		$results->out = array();
-		$results->returned = array();
+
 		$results->query = 'CALL ' . $table . '(' . $params . ');';
 
 		$this->connection->multi_query( $results->query );
+
+		$results->returned = array();
 
 		do
 		{
@@ -84,7 +93,14 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 		while( $this->connection->more_results() &&
 				$this->connection->next_result() );
 
-		$results->out = $this->query( 'SELECT ' . $params )->current();
+		if( empty( $params ) )
+		{
+			$results->out = array();
+		}
+		else
+		{
+			$results->out = $this->query( 'SELECT ' . $params )->current();
+		}
 
 		return $results;
 	}
