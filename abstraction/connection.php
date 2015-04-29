@@ -1,26 +1,16 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\abstraction;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-    trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-require_once( 'helpers/utils.php' );
+<?php namespace n3tw0rk\phpfeather\abstraction;
 
 /**
- *	Connection
+ *	Connection Abstract Class
  *
- *	@version 0.0.1
- *	@package phpfeather\abstract
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class PHPF_Connection
+abstract class Connection
 {
-
 	protected $host;
 	protected $user;
 	protected $pass;
@@ -61,8 +51,10 @@ abstract class PHPF_Connection
 
 	public function queryString()
 	{
+		require_once( 'helpers/utils.php' );
+
 		$args = func_get_args();
-		return forward_static_call_array( array( 'uk\co\n3tw0rk\phpfeather\helpers\PHPF_UTILS', 'qprintf' ), $args );
+		return forward_static_call_array( array( 'n3tw0rk\phpfeather\helpers\UTILS', 'qprintf' ), $args );
 	}
 	
 	public function testConnection()

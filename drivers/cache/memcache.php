@@ -1,45 +1,38 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\drivers\cache;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+<?php namespace n3tw0rk\phpfeather\drivers\cache;
 
 include_once( 'abstraction/cached.php' );
 include_once( 'exceptions/cache.php' );
 
-use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use n3tw0rk\phpfeather\abstraction\Cached;
+use n3tw0rk\phpfeather\exceptions\CacheException;
 
 /**
- *	Memcache Driver
+ *	Memcache Driver Class
  *
- *	@version 0.0.1
- *	@package uk\co\n3tw0rk\phpfeather\drivers\cache
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\drivers\cache
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_MemcacheDriver extends ABSTRACTION\PHPF_Cached
+class MemcacheDriver extends Cached
 {
 
 	public function __construct( $attributes = array() )
 	{
 		if( !class_exists( 'Memcache' ) )
 		{
-			throw new EXCEPTIONS\PHPF_CacheException( INVALID_MEMCACHE );
+			throw new CacheException( INVALID_MEMCACHE );
 		}
 
 		if( !array_key_exists( 'host', $attributes ) )
 		{
-			throw new EXCEPTIONS\PHPF_CacheException( INVALID_CACHE_HOST );
+			throw new CacheException( INVALID_CACHE_HOST );
 		}
 
 		if( !array_key_exists( 'port', $attributes ) )
 		{
-			throw new EXCEPTIONS\PHPF_CacheException( INVALID_CACHE_PORT );
+			throw new CacheException( INVALID_CACHE_PORT );
 		}
 
 		$this->attributes = $attributes;

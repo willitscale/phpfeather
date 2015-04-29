@@ -1,28 +1,21 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\system;
 
-namespace uk\co\n3tw0rk\phpfeather\system;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
+use n3tw0rk\phpfeather\abstraction\Model;
 
 /**
  *	Object Pool	
  *
  *	@version 0.0.1
- *	@package phpfeather\system
+ *	@package n3tw0rk\phpfeather\system
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_ObjectPool
+class ObjectPool
 {
 	/**
 	 *	@access private
-	 *	@var PHPF_ObjectPool
+	 *	@var n3tw0rk\phpfeather\system\ObjectPool
 	 */
 	private static $instance = null;
 
@@ -30,15 +23,25 @@ class PHPF_ObjectPool
 	 *	@access private
 	 *	@var Array
 	 */
-	private static $modelPool = array();
+	private static $libraryPool = [];
 
 	/**
 	 *	@access private
 	 *	@var Array
 	 */
-	private static $libraryPool = array();
+	private static $restPool = [];
 
-	private static $restPool = array();
+	/**
+	 *	@access private
+	 *	@var Array
+	 */
+	private static $workerPool = [];
+
+	/**
+	 *	@access private
+	 *	@var Array
+	 */
+	private static $configPool = [];
 
 	/**
 	 *	@access private
@@ -56,19 +59,19 @@ class PHPF_ObjectPool
 	 */
 	private function __clone(){}
 
-	public function &getModel( $model = null )
+	public function &getWorker( $worker = null )
 	{
-		if( is_null( $model ) || !array_key_exists( $model, self::$modelPool ) )
+		if( is_null( $worker ) || !array_key_exists( $worker, self::$workerPool ) )
 		{
 			return self::$null;
 		}
 
-		return self::$modelPool[ $model ];
+		return self::$workerPool[ $worker ];
 	}
 	
 	public function &addModel( $name = null, &$model = null )
 	{
-		if( !isset( $name ) || !isset( $model ) || !( $model instanceof ABSTRACTION\PHPF_Model ) )
+		if( !isset( $name ) || !isset( $model ) || !( $model instanceof Model ) )
 		{
 			return self::$null;
 		}
@@ -124,9 +127,9 @@ class PHPF_ObjectPool
 
 	public static function &instance()
 	{
-		if( is_null( self::$instance ) || !( self::$instance instanceof PHPF_ObjectPool ) )
+		if( is_null( self::$instance ) || !( self::$instance instanceof ObjectPool ) )
 		{
-			self::$instance = new PHPF_ObjectPool();
+			self::$instance = new ObjectPool();
 		}
 
 		return self::$instance;

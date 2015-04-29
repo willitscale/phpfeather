@@ -1,28 +1,20 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\abstraction;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-    trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+<?php namespace n3tw0rk\phpfeather\abstraction;
 
 require_once( 'abstraction/controller.php' );
 require_once( 'abstraction/rest.php' );
 
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
-
+use n3tw0rk\phpfeather\system\Application;
 
 /**
- *	Controller
+ *	Restful Controller Abstract Class
  *
- *	@version 0.0.1
- *	@package phpfeather\abstract
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class PHPF_RestfulController extends PHPF_Controller
+abstract class RestfulController extends Controller
 {
 	public function __construct()
 	{
@@ -34,10 +26,9 @@ abstract class PHPF_RestfulController extends PHPF_Controller
 	 */
 	public function init()
 	{
-		$name = SYSTEM\PHPF_Application::getUrlParam( 2 );
-		$id = SYSTEM\PHPF_Application::getUrlParam( 3 );
-		
-		$rest = SYSTEM\PHPF_Application::getRest( $name );
+		$name = Application::getUrlParam( 2 );
+		$id = Application::getUrlParam( 3 );
+		$rest = Application::getRest( $name );
 
 		if( empty( $_SERVER[ 'REQUEST_METHOD' ] ) )
 		{

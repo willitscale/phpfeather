@@ -1,27 +1,17 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\abstraction;
 
-namespace uk\co\n3tw0rk\phpfeather\abstraction;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-    trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-include_once( 'abstraction/system.php' );
-
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
-
+use n3tw0rk\phpfeather\system\Application;
 
 /**
- *	Controller
+ *	Controller Abstract Class
  *
- *	@version 0.0.1
- *	@package phpfeather\abstract
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class PHPF_Controller extends PHPF_System
+abstract class Controller extends System
 {
 	protected $controller;
 	protected $action;
@@ -29,8 +19,9 @@ abstract class PHPF_Controller extends PHPF_System
 	public function __construct()
 	{
 		parent::__construct();
-		$this->controller = SYSTEM\PHPF_Application::getControllerString();
-		$this->action = SYSTEM\PHPF_Application::getActionString();
+		
+		$this->controller = Application::getControllerString();
+		$this->action = Application::getActionString();
 		
 		$this->params[ 'title' ] = 'Title';
 		$this->params[ 'controller' ] = $this->controller;

@@ -1,24 +1,16 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\abstraction;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+<?php namespace n3tw0rk\phpfeather\abstraction;
 
 /**
- *	Results
+ *	Results Abstract Class
  *
- *	@version 0.0.1
- *	@package phpfeather\abstract
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class PHPF_Results implements \Countable, \Iterator
+abstract class Results implements \Countable, \Iterator
 {
-
 	protected $resultSet;
 	protected $position;
 	protected $returnType;

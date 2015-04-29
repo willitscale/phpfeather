@@ -91,11 +91,11 @@ define( 'VALIDATION_COMPARE_FAIL',	0x10, true );
 define( 'HOUR',							3600, true );
 define( 'DAY',								86400, true );
 
-define( 'LIBRARY_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\libraries\\PHPF_', true );
+define( 'LIBRARY_PREFIX', '\\n3tw0rk\\phpfeather\\libraries\\PHPF_', true );
 
-define( 'CACHE_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\cache\\PHPF_', true );
-define( 'CONNECTION_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\connection\\PHPF_', true );
-define( 'RESULTS_DRIVER_PREFIX', '\\uk\\co\\n3tw0rk\\phpfeather\\drivers\\results\\PHPF_', true );
+define( 'CACHE_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\cache\\PHPF_', true );
+define( 'CONNECTION_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\connection\\PHPF_', true );
+define( 'RESULTS_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\results\\PHPF_', true );
 
 $autoload = array();
 $helpers = array();

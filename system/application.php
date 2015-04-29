@@ -1,18 +1,9 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\system;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+<?php namespace n3tw0rk\phpfeather\system;
 
 require_once( 'system/objectpool.php' );
-
 require_once( 'abstraction/controller.php' );
 require_once( 'abstraction/restfulcontroller.php' );
 require_once( 'abstraction/model.php' );
-
 require_once( 'exceptions/application.php' );
 
 use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
@@ -21,8 +12,8 @@ use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 /**
  *	Application	
  *
- *	@version 0.0.1
- *	@package phpfeather\system
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\system
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

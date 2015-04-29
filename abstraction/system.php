@@ -1,34 +1,28 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\abstraction;
 
-namespace uk\co\n3tw0rk\phpfeather\abstraction;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
+use n3tw0rk\phpfeather\system\Application;
 
 /**
- *	System
+ *	System Abstract Class
  *
- *	@version 0.0.1
- *	@package phpfeather\abstract
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
 abstract class PHPF_System
 {
-	protected $params = array();
+	protected $params = [];
 	
 	/**
 	 * Constructor Sub-Routine
 	 */
 	public function __construct()
 	{
-		SYSTEM\PHPF_Application::autoLoad( $this );
+		Application::autoLoad( $this );
 	}
+
 	/**
 	 * Model Method
 	 *
@@ -43,7 +37,7 @@ abstract class PHPF_System
 			$local = strtolower( $model );
 		}
 
-		$this->{$local} = SYSTEM\PHPF_Application::getModel( $model );
+		$this->{$local} = Application::getModel( $model );
 	}
 
 	/**
@@ -60,7 +54,7 @@ abstract class PHPF_System
 			$local = strtolower( $library );
 		}
 
-		$this->{$local} = SYSTEM\PHPF_Application::getLibrary( $library );
+		$this->{$local} = Application::getLibrary( $library );
 	}
 
 	/**
@@ -70,9 +64,9 @@ abstract class PHPF_System
 	 * @param String
 	 * @return String
 	 */
-	public function view( $view = null, &$params = array() )
+	public function view( $view = null, &$params = [] )
 	{
-		return SYSTEM\PHPF_Application::getView( $view, $params );
+		return Application::getView( $view, $params );
 	}
 
         /**
@@ -83,7 +77,7 @@ abstract class PHPF_System
          */
 	public function helper( $helper = null )
 	{
-		return SYSTEM\PHPF_Application::getHelper( $helper );
+		return Application::getHelper( $helper );
 	}
 	
         /**
@@ -93,7 +87,7 @@ abstract class PHPF_System
          * @param Array
          * @return void
          */
-	public function render( $view = null, &$params = array() )
+	public function render( $view = null, &$params = [] )
 	{
 		if( !is_array( $params ) )
 		{
@@ -102,7 +96,7 @@ abstract class PHPF_System
 
 		$params = array_merge( $this->params, $params );
 		
-		print( SYSTEM\PHPF_Application::getView( $view, $params ) );
+		print( Application::getView( $view, $params ) );
 	}
 }
 
