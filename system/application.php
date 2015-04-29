@@ -6,11 +6,11 @@ require_once( 'abstraction/restfulcontroller.php' );
 require_once( 'abstraction/model.php' );
 require_once( 'exceptions/application.php' );
 
-use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use n3tw0rk\phpfeather\abstraction as Abstraction;
+use n3tw0rk\phpfeather\exceptions as Exception;
 
 /**
- *	Application	
+ *	Application	Class
  *
  *	@version 0.1.1
  *	@package n3tw0rk\phpfeather\system
@@ -18,7 +18,7 @@ use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_Application
+class Application
 {
 	/** */
 	private static $action;
@@ -67,7 +67,7 @@ class PHPF_Application
 
 		unset( $controller );
 
-		if( !( $object instanceof ABSTRACTION\PHPF_RestfulController ) )
+		if( !( $object instanceof Abstraction\RestfulController ) )
 		{
 			$action = self::getActionString( $action );
 		
@@ -169,7 +169,7 @@ class PHPF_Application
 	
 	public static function autoLoad( $instance = null )
 	{
-		if( !( $instance instanceof ABSTRACTION\PHPF_System ) )
+		if( !( $instance instanceof Abstraction\System ) )
 		{
 			return 0;
 		}
@@ -236,7 +236,7 @@ class PHPF_Application
 			return $path;	
 		}
 		
-		throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_FILE_REQUESTED );
+		throw new Exception\ApplicationException( INVALID_FILE_REQUESTED );
 	}
 	
 	/**
@@ -252,13 +252,13 @@ class PHPF_Application
 	/**
 	 * Base Path Method
 	 *
-	 * @return uk\co\n3tw0rk\phpfeather\abstraction\PHPF_Library
+	 * @return uk\co\n3tw0rk\phpfeather\Abstraction\Library
 	 */
 	public static function &getLibrary( $library = null )
 	{
 		if( empty( $library ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_LIBRARY );
+			throw new Exception\ApplicationException( INVALID_LIBRARY );
 		}
 
 		$objectPool = self::objectPool();
@@ -284,24 +284,24 @@ class PHPF_Application
 			{
 				self::exceptionHandler( $e );
 			}
-			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
+			throw new Exception\ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
 		}
 
 		return $objectPool->addLibrary( $library, $object );
 	}
 
+	/**
+	 * Get Model Method
+	 * 
+	 * @param string $model
+	 * @throws Exception\ApplicationException
+	 * @return Abstraction\Model
+	 */
 	public static function &getModel( $model = null )
 	{
 		if( empty( $model ) )
 		{
-			throw new PHPF_ApplicationException( INVALID_MODEL );
-		}
-
-		$objectPool = self::objectPool();
-
-		if( !is_null( $objectPool->getModel( $model ) ) )
-		{
-			return $objectPool->getModel( $model );
+			throw new Exception\ApplicationException( INVALID_MODEL );
 		}
 
 		$path = self::getPath( MODEL_DIR, strtolower( $model ) );
@@ -318,35 +318,50 @@ class PHPF_Application
 			{
 				self::exceptionHandler( $e );
 			}
-			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
+			throw new Exception\ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
 		}
 
-		if( !( $object instanceof ABSTRACTION\PHPF_Model ) )
+		if( !( $object instanceof Abstraction\Model ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_MODEL );
+			throw new Exception\ApplicationException( INVALID_MODEL );
 		}
 
-		return $objectPool->addModel( $model, $object );
+		return $object;
 	}
-	
+
+	/**
+	 * Get Helper Method
+	 * 
+	 * @param string $helper
+	 * @throws Exception\ApplicationException
+	 * @return void
+	 */
 	public static function getHelper( $helper )
 	{
 
 		if( empty( $helper ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_HELPER );
+			throw new Exception\ApplicationException( INVALID_HELPER );
 		}
 
 		$path = self::getPath( HELPER_DIR, strtolower( $helper ) );
 
-		include_once( $path );
+		require_once( $path );
 	}
 
-	public static function &getView( $view = null, &$flags = array() )
+	/**
+	 * Get View Method
+	 * 
+	 * @param string $view
+	 * @param unknown $flags
+	 * @throws Exception\ApplicationException
+	 * @return string
+	 */
+	public static function &getView( $view = null, &$flags = [] )
 	{
 		if( empty( $view ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_VIEW );
+			throw new Exception\ApplicationException( INVALID_VIEW );
 		}
 
 		$path = self::getPath( VIEW_DIR, strtolower( $view ) );
@@ -376,7 +391,7 @@ class PHPF_Application
 	{
 		if( empty( $controller ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_CONTROLLER );
+			throw new Exception\ApplicationException( INVALID_CONTROLLER );
 		}
 
 		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
@@ -395,12 +410,12 @@ class PHPF_Application
 			{
 				self::exceptionHandler( $e );
 			}
-			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
+			throw new Exception\ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
 		}
 
-		if( !( $object instanceof ABSTRACTION\PHPF_Controller ) )
+		if( !( $object instanceof Abstraction\Controller ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_CONTROLLER );
+			throw new Exception\ApplicationException( INVALID_CONTROLLER );
 		}
 
 		return $object;
@@ -411,7 +426,7 @@ class PHPF_Application
 	{
 		if( empty( $rest ) )
 		{
-			throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_REST ) ;
+			throw new Exception\ApplicationException( INVALID_REST ) ;
 		}
 
 		$path = self::getPath( REST_DIR, strtolower( $rest ) );
@@ -431,12 +446,12 @@ class PHPF_Application
 				self::exceptionHandler( $e );
 			}
 
-			throw new EXCEPTIONS\PHPF_ApplicationException( sprintf( REST_NOT_EXIST, $controller ) );
+			throw new Exception\ApplicationException( sprintf( REST_NOT_EXIST, $controller ) );
 		}
 
-                if( !( $object instanceof ABSTRACTION\PHPF_Rest ) )
+                if( !( $object instanceof Abstraction\Rest ) )
                 {
-                        throw new EXCEPTIONS\PHPF_ApplicationException( INVALID_REST );
+                        throw new Exception\ApplicationException( INVALID_REST );
                 }
 
                 return $object;
@@ -461,7 +476,7 @@ class PHPF_Application
 
 	public static function &objectToArray( $object )
 	{
-		$array = array();
+		$array = [];
 
 		if( !is_object( $object ) )
 		{
@@ -531,7 +546,7 @@ class PHPF_Application
 		
 		if( !is_array( self::$urlParams ) )
 		{
-			self::$urlParams = array();
+			self::$urlParams = [];
 		}
 		
 		if( !array_key_exists( $param, self::$urlParams ) )
@@ -542,10 +557,8 @@ class PHPF_Application
 		return self::$urlParams[ $param ];
 	}
 
-	public static function exceptionHandler(Exception $e)
+	public static function exceptionHandler( \Exception $e )
 	{
 		printf( "<pre>LayerException : <br />\n%s\n%s</pre>", $e->getMessage(), $e->getTraceAsString() );
 	}
-
-
 }

@@ -5,7 +5,7 @@ use n3tw0rk\phpfeather\abstraction\Model;
 /**
  *	Object Pool	
  *
- *	@version 0.0.1
+ *	@version 0.1.1
  *	@package n3tw0rk\phpfeather\system
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
@@ -134,5 +134,4 @@ class ObjectPool
 
 		return self::$instance;
 	}
-
 }

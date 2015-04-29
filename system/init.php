@@ -1,4 +1,4 @@
-<?php namespace uk\co\n3tw0rk\phpfeather\system;
+<?php namespace n3tw0rk\phpfeather\system;
 
 require_once( 'config/constants.php' );
 require_once( APPLICATION_PATH . 'config/local.php' );
@@ -6,11 +6,20 @@ require_once( 'system/application.php' );
 require_once( 'system/debugging.php' );
 require_once( 'exceptions/application.php' );
 
-use uk\co\n3tw0rk\phpfeather\exceptions\PHPF_ApplicationException;
-use uk\co\n3tw0rk\phpfeather\system\PHPF_Debugging;
-use uk\co\n3tw0rk\phpfeather\system\PHPF_Application;
+use n3tw0rk\phpfeather\exceptions\ApplicationException;
+use n3tw0rk\phpfeather\system\Debugging;
+use n3tw0rk\phpfeather\system\Application;
 
-class PHPF_INIT
+/**
+ *	Init Class
+ *
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\system
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class Init
 {
 	public function __construct()
 	{
@@ -21,10 +30,10 @@ class PHPF_INIT
 	{
 		try
 		{
-			PHPF_Debugging::init();
-			PHPF_Application::init();
+			Debugging::init();
+			Application::init();
 		}
-		catch( PHPF_ApplicationException $exception )
+		catch( ApplicationException $exception )
 		{
 			self::debug( $exception );
 		}
