@@ -1,39 +1,35 @@
-<?php
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+<?php namespace n3tw0rk\phpfeather\Helpers;
 
 /**
- *	CRYPTOGRAPHY
+ *	Cryptogrpahy Class
  *
- *	@version 0.0.1
- *	@package phpfeather\helpers
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_CRYPTOGRAPHY
+class Cryptogrpahy
 {
+	const HASH_ALGORITHM = 'sha256';
+	const ITERATIONS = 1000;
+	const SALT_BYTES = 128;
+	const HASH_BYTES = 128;
 
-	private static $HASH_ALGORITHM = 'sha256';
-	private static $ITERATIONS = 1000;
-	private static $SALT_BYTES = 128;
-	private static $HASH_BYTES = 128;
-
-	public static function &ENCRYPT()
+	public static function &encrypt()
 	{
 	}
 	
-	public static function &DECRYPT()
+	public static function &decrypt()
 	{
 	
 	}
 	
-	public static function &HASH( $value, $salt, $algorithm )
+	public static function &hash( $value, $salt, $algorithm )
 	{
-		$hashLength = strlen( hash( self::$HASH_ALGORITHM, '', TRUE ) );
+		$hashLength = strlen( hash( self::HASH_ALGORITHM, '', TRUE ) );
 
-		$blockCount = ceil( self::$HASH_BYTES / $hashLength );
+		$blockCount = ceil( self::HASH_BYTES / $hashLength );
 
 		$output = '';
 		for( $i = 1; $i <= $blockCount; $i++ )
@@ -47,12 +43,12 @@ class PHPF_CRYPTOGRAPHY
 			$output .= $xorsum;
 		}
 
-		$hash = base64_encode( bin2hex( substr( $output, 0, self::$HASH_BYTES ) ) );
+		$hash = base64_encode( bin2hex( substr( $output, 0, self::HASH_BYTES ) ) );
 
 		return $hash;
 	}
 	
-	public static function &GENERATE_SALT( $bytes = self::$SALT_BYTES )
+	public static function &salt( $bytes = self::SALT_BYTES )
 	{
 		$bytes = ( int ) $bytes;
 	
@@ -62,8 +58,8 @@ class PHPF_CRYPTOGRAPHY
 		return $salt;
 	}
 	
-	public static function COMPARE( $value, $salt, $hash )
+	public static function compare( $value, $salt, $hash )
 	{
-		return ( self::HASH( $value, $salt ) === $hash );
+		return ( self::hash( $value, $salt ) === $hash );
 	}
 }

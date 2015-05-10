@@ -1,13 +1,8 @@
 <?php namespace n3tw0rk\phpfeather\system;
 
-require_once( 'system/objectpool.php' );
-require_once( 'abstraction/controller.php' );
-require_once( 'abstraction/restfulcontroller.php' );
-require_once( 'abstraction/model.php' );
-require_once( 'exceptions/application.php' );
-
 use n3tw0rk\phpfeather\abstraction as Abstraction;
 use n3tw0rk\phpfeather\exceptions as Exception;
+use n3tw0rk\phpfeather\Helpers as Helpers;
 
 /**
  *	Application	Class
@@ -20,6 +15,12 @@ use n3tw0rk\phpfeather\exceptions as Exception;
  */
 class Application
 {
+	const DEFAULT_CONTROLLER = 'Index';
+
+	const DEFAULT_ACTION = 'init';
+
+	const SHELL_DEFAULT_ACTION = '__init';
+
 	/** */
 	private static $action;
 	
@@ -47,8 +48,6 @@ class Application
 		'__invoke', 
 		'__set_state', 
 		'__clone' );
-
-	private static $urlParams = null;
 
 	/**
 	 *	Init Method
@@ -87,12 +86,36 @@ class Application
 	
 	public static function autoHelpers()
 	{
-		global $helpers;
+		$helpers = self::getConfig( 'Helpers' );
 		
 		foreach( $helpers AS $helper )
 		{
 			self::getHelper( $helper );
 		}
+	}
+	
+	/**
+	 * Get Config Method
+	 * 
+	 * @param String $config
+	 * @return Array
+	 */
+	public static function getConfig( $config )
+	{
+		$data = ObjectPool::getConfig( $config );
+		
+		if( !empty( $data ) )
+		{
+			return $data;
+		}
+
+		$path = Helpers\Paths::path( 'Config/' . $config );
+
+		$data = require_once( $path );
+		
+		ObjectPool::addConfig( $config, $data );
+		
+		return $data;
 	}
 	
 	/**
@@ -108,25 +131,14 @@ class Application
 			return self::$controller;
 		}
 
-
-		if( array_key_exists( 'TERM', $_SERVER ) || array_key_exists( 'TERM', $_SERVER ) )
+		if( empty( $controller ) )
 		{
-			if( empty( $controller ) )
-			{
-				$controller = self::getShellParam( 1 );
-			}
-		}
-		else
-		{
-			if( empty( $controller ) )
-			{
-				$controller = self::getUrlParam( 1 );
-			}
+			$controller = Helpers\Input::getParam( 1 );
 		}
 
 		if( is_null( $controller ) )
 		{
-			$controller = DEFAULT_CONTROLLER;
+			$controller = self::DEFAULT_CONTROLLER;
 		}
 		
 		return ( self::$controller = $controller );
@@ -139,28 +151,20 @@ class Application
 			return self::$action;
 		}
 
-		if( array_key_exists( 'TERM', $_SERVER ) || array_key_exists( 'TERM', $_SERVER ) )
+		if( empty( $controller ) )
 		{
-			if( empty( $action ) )
-			{
-				$action = self::getShellParam( 2 );
-			}
-
-			if( empty( $action ) )
-			{
-				$action = SHELL_DEFAULT_ACTION;
-			}
+			$action = Helpers\Input::getParam( 2 );
 		}
-		else
-		{
-			if( empty( $action ) )
-			{
-				$action = self::getUrlParam( 2 );
-			}
 
-			if( empty( $action ) )
+		if( empty( $action ) )
+		{
+			if( Helpers\Input::terminal() )
 			{
-				$action = DEFAULT_ACTION;
+				$action = self::SHELL_DEFAULT_ACTION;
+			}
+			else
+			{
+				$action = self::DEFAULT_ACTION;	
 			}
 		}
 
@@ -174,7 +178,7 @@ class Application
 			return 0;
 		}
 
-		global $autoload;
+		$autoload = self::getConfig( 'Autoload' );
 		
 		foreach( $autoload AS $local => $library )
 		{
@@ -207,47 +211,6 @@ class Application
 
 		return 1;
 	}
-
-	public static function &objectPool()
-	{
-		return PHPF_ObjectPool::instance();
-	}
-
-	public static function getPath( $formattedURI, $suffix )
-	{
-
-		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', APPLICATION_PATH ), $suffix ) ) )
-		{
-			return $path;	
-		}
-
-		if( file_exists( $path=sprintf( $formattedURI, sprintf( '%s/', PHP_FEATHER ), $suffix ) ) )
-		{
-			return $path;	
-		}
-
-		if( file_exists( $path=sprintf( $formattedURI, self::basePath(), $suffix ) ) )
-		{
-			return $path;
-		}
-		
-		if( file_exists( $path=sprintf( $formattedURI, './', $suffix ) ) )
-		{
-			return $path;	
-		}
-		
-		throw new Exception\ApplicationException( INVALID_FILE_REQUESTED );
-	}
-	
-	/**
-	 * Base Path Method
-	 *
-	 * @return String
-	 */
-	public static function basePath()
-	{
-		return str_replace( DEFAULT_INDEX, '', $_SERVER[ 'SCRIPT_FILENAME' ] );
-	}
 	
 	/**
 	 * Base Path Method
@@ -261,19 +224,13 @@ class Application
 			throw new Exception\ApplicationException( INVALID_LIBRARY );
 		}
 
-		$objectPool = self::objectPool();
-		
-		if( !empty( $objectPool->getLibrary( $library ) ) )
-		{
-			return $objectPool->getLibrary( $library );
-		}
-		
-		$path = self::getPath( LIBRARY_DIR, strtolower( $library ) );
+		$object = ObjectPool::getLibrary( $library );
 
-		include_once( $path );
-		
-		$library = LIBRARY_PREFIX . $library;
-		
+		if( !empty( $object ) )
+		{
+			return $object;
+		}
+
 		try
 		{
 			$object = new $library();
@@ -287,7 +244,7 @@ class Application
 			throw new Exception\ApplicationException( sprintf( LIBRARY_NOT_EXIST, $library ) );
 		}
 
-		return $objectPool->addLibrary( $library, $object );
+		return ObjectPool::addLibrary( $library, $object );
 	}
 
 	/**
@@ -338,7 +295,6 @@ class Application
 	 */
 	public static function getHelper( $helper )
 	{
-
 		if( empty( $helper ) )
 		{
 			throw new Exception\ApplicationException( INVALID_HELPER );
@@ -394,15 +350,13 @@ class Application
 			throw new Exception\ApplicationException( INVALID_CONTROLLER );
 		}
 
-		$path = self::getPath( CONTROLLER_DIR, strtolower( $controller ) );
-
-		require_once( $path );
-
 		$object = null;
 
 		try
 		{
-			$object = new $controller();
+			$controller = "n3tw0rk\\phpfeather\\Controllers\\" . $controller;
+
+			$object = new $controller;
 		}
 		catch( Exception $e )
 		{
@@ -420,7 +374,6 @@ class Application
 
 		return $object;
 	}
-
 
 	public static function &getRest( $rest = null )
 	{
@@ -455,106 +408,6 @@ class Application
                 }
 
                 return $object;
-	}
-
-	public static function &arrayToObject( $array )
-	{
-		$object = new stdClass;
-
-		if( !is_array( $array ) )
-		{
-			return $array;
-		}
-
-		foreach( $array AS $key => $val )
-		{
-			$object->$key = self::arrayToObject( $val );
-		}
-
-		return $object;
-	}
-
-	public static function &objectToArray( $object )
-	{
-		$array = [];
-
-		if( !is_object( $object ) )
-		{
-			return $object;
-		}
-
-		foreach( $object AS $key => $val )
-		{
-			$array[ $key ] = self::objectToArray( $val );
-		}
-
-		return $array;
-	}
-	
-	public static function getShellParam( $param = 0 )
-	{
-		if( empty( $param ) )
-		{
-			return null;
-		}
-
-		if( $param >= $_SERVER[ 'argc' ] )
-		{
-			return null;
-		}
-
-		return $_SERVER[ 'argv' ][ $param ];
-	}
-
-	public static function getUrlParam( $param = 0 )
-	{
-		if( empty( $param-- ) )
-		{
-			return null;
-		}
-
-		if( !is_array( self::$urlParams ) )
-		{
-		
-			global $mapping;
-			
-			$args = '';
-
-			if( array_key_exists( 'u', $_GET ) )
-			{
-				$args = $_GET[ 'u' ];
-			}
-
-			foreach( $mapping AS $from => $to )
-			{
-				if( false !== stripos( $args, $from ) )
-				{
-					$args = str_ireplace( $from, $to, $args );
-				}
-			}
-
-			foreach( explode( '/', $args ) AS $val )
-			{
-				if( '' !== $val )
-				{
-					self::$urlParams[] = $val;
-				}
-			}
-		}
-
-		unset( $args );
-		
-		if( !is_array( self::$urlParams ) )
-		{
-			self::$urlParams = [];
-		}
-		
-		if( !array_key_exists( $param, self::$urlParams ) )
-		{
-			return null;
-		}
-
-		return self::$urlParams[ $param ];
 	}
 
 	public static function exceptionHandler( \Exception $e )

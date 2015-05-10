@@ -1,8 +1,5 @@
 <?php
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-
 /**
  *	Validation
  *
@@ -12,7 +9,7 @@ if( !defined( 'SYSTEM_ACCESS' ) )
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_Validation
+class Validation
 {
 
 	public function __construct()

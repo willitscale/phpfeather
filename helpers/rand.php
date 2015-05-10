@@ -1,20 +1,16 @@
-<?php
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
+<?php namespace n3tw0rk\phpfeather\Helpers;
 
 /**
- *	RAND
+ *	Rand Class
  *
- *	@version 0.0.1
- *	@package phpfeather\helpers
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_RAND
+class Rand
 {
-
 	public static function hash()
 	{
 		return sha1( self::num() + '_' + self::num() + '_' + self::num() );
@@ -24,5 +20,4 @@ class PHPF_RAND
 	{
 		return mt_rand();
 	}
-
 }

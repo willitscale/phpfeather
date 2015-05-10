@@ -1,20 +1,14 @@
-<?php namespace n3tw0rk\phpfeather\system;
+<?php namespace n3tw0rk\phpfeather\System;
 
-require_once( 'config/constants.php' );
-require_once( APPLICATION_PATH . 'config/local.php' );
-require_once( 'system/application.php' );
-require_once( 'system/debugging.php' );
-require_once( 'exceptions/application.php' );
-
-use n3tw0rk\phpfeather\exceptions\ApplicationException;
-use n3tw0rk\phpfeather\system\Debugging;
-use n3tw0rk\phpfeather\system\Application;
+use n3tw0rk\phpfeather\Exceptions\ApplicationException;
+use n3tw0rk\phpfeather\System\Debugging;
+use n3tw0rk\phpfeather\System\Application;
 
 /**
  *	Init Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\system
+ *	@package n3tw0rk\phpfeather\System
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

@@ -1,17 +1,15 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Helpers;
 
-namespace uk\co\n3tw0rk\phpfeather\helpers;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-
-include_once( 'abstraction/connection.php' );
-include_once( 'drivers/results/mongodb.php' );
-
-class PHPF_UTILS
+/**
+ *	Utils Helper
+ *
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather\Helpers
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class Utils
 {
 	public static function escape( $string = null )
 	{

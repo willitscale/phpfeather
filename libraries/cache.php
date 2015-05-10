@@ -1,16 +1,9 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\libraries;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+<?php namespace n3tw0rk\phpfeather\libraries;
 
 include_once( 'exceptions/cache.php' );
 
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use n3tw0rk\phpfeather\system as SYSTEM;
+use n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
 
 /**
  *	Cache Library
@@ -21,7 +14,7 @@ use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_Cache
+class Cache
 {
 	/** */
 	private $instances = array();

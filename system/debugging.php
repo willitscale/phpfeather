@@ -11,11 +11,17 @@
  */
 class Debugging
 {
+	const DEVELOPMENT = 0x01;
+
+	const TESTING = 0x02;
+	
+	const PRODUCTION = 0x03;
+
 	public static function init()
 	{
 		if( !defined( 'APPLICATION_RELEASE' ) )
 		{
-			define( 'APPLICATION_RELEASE', DEVELOPMENT );
+			define( 'APPLICATION_RELEASE', self::DEVELOPMENT );
 		}
 
 		$reporting = E_ALL | ~E_NOTICE | ~E_WARNING;
@@ -23,24 +29,26 @@ class Debugging
 		
 		switch( APPLICATION_RELEASE )
 		{
-	        case PRODUCTION :
+	        case self::PRODUCTION :
 	        {
 	                $reporting = E_ALL;
 	                ini_set( 'display_errors', '0' );
 	                break;
 	        }
-	        case TESTING :
+	        case self::TESTING :
 	        {
-	                error_reporting(  );
+	                $reporting = E_ALL;
 	                ini_set( 'display_errors', '1' );
 	                break;
 	        }
-	        case DEVELOPMENT :
+	        case self::DEVELOPMENT :
 	        default :
 	        {
 	                $reporting = E_ALL;
 	                break;
 			}
 		}
+
+		error_reporting( $reporting );
 	}
 }

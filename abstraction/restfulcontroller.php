@@ -1,15 +1,12 @@
-<?php namespace n3tw0rk\phpfeather\abstraction;
+<?php namespace n3tw0rk\phpfeather\Abstraction;
 
-require_once( 'abstraction/controller.php' );
-require_once( 'abstraction/rest.php' );
-
-use n3tw0rk\phpfeather\system\Application;
+use n3tw0rk\phpfeather\System\Application;
 
 /**
  *	Restful Controller Abstract Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\abstraction
+ *	@package n3tw0rk\phpfeather\Abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

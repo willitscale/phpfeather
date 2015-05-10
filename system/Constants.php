@@ -1,15 +1,6 @@
 <?php
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
 define( 'ZERO', 0x00, true );
-
-define( 'DEVELOPMENT',  0x01, true );
-define( 'TESTING', 0x02, true );
-define( 'PRODUCTION',  0x03, true );
 
 define( 'INVALID_CONTROLLER',  'Invalid controller requested.', true );
 define( 'INVALID_REST',  'Invalid rest requested.', true );
@@ -26,12 +17,7 @@ define( 'MODEL_NOT_EXIST', 'Model class `%s` has thrown an error.', true );
 define( 'LIBRARY_NOT_EXIST', 'Library class `%s` has thrown an error.', true );
 define( 'DRIVER_NOT_EXIST', 'Driver class `%s` has thrown an error.', true );
 
-define( 'CONTROLLER_DIR', '%scontrollers/%s.php', true );
-define( 'MODEL_DIR', '%smodels/%s.php', true );
-define( 'LIBRARY_DIR', '%slibraries/%s.php', true );
-define( 'VIEW_DIR',	 '%sviews/%s.php', true );
-define( 'HELPER_DIR', '%shelpers/%s.php', true );
-define( 'REST_DIR', '%srest/%s.php', true );
+
 define( 'DRIVER_DB_DIR', '%sdrivers/connection/%s.php', true );
 define( 'DRIVER_RES_DIR', '%sdrivers/results/%s.php', true );
 define( 'DRIVER_SES_DIR', '%sdrivers/session/%s.php', true );
@@ -60,11 +46,6 @@ define( 'INVALID_CACHE_PORT', 'Invalid cache port attribute.', true );
 
 define( 'INVALID_DB_CREDENTIALS', 'Invalid database credentials have been provided.', true );
 
-define( 'DEFAULT_CONTROLLER', 'index', true );
-define( 'DEFAULT_ACTION', 'init', true );
-define( 'SHELL_DEFAULT_ACTION', '__init', true );
-define( 'DEFAULT_INDEX',			'index.php', true );
-
 define( 'RESULT_OBJECT',			0x01, true );
 define( 'RESULT_ARRAY',				0x02, true );
 define( 'RESULT_ASSOC',				0x03, true );
@@ -91,17 +72,7 @@ define( 'VALIDATION_COMPARE_FAIL',	0x10, true );
 define( 'HOUR',							3600, true );
 define( 'DAY',								86400, true );
 
-define( 'LIBRARY_PREFIX', '\\n3tw0rk\\phpfeather\\libraries\\PHPF_', true );
-
-define( 'CACHE_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\cache\\PHPF_', true );
-define( 'CONNECTION_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\connection\\PHPF_', true );
-define( 'RESULTS_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\results\\PHPF_', true );
-
-$autoload = array();
-$helpers = array();
-$database = array();
-$cached = array();
-$session = array();
-$cookie = array();
-$caching = array();
-$mapping = array();
+define( 'LIBRARY_PREFIX', '\\n3tw0rk\\phpfeather\\libraries\\', true );
+define( 'CACHE_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\cache\\', true );
+define( 'CONNECTION_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\connection\\', true );
+define( 'RESULTS_DRIVER_PREFIX', '\\n3tw0rk\\phpfeather\\drivers\\results\\', true );

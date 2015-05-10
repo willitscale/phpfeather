@@ -1,6 +1,6 @@
-<?php namespace n3tw0rk\phpfeather\system;
+<?php namespace n3tw0rk\phpfeather\System;
 
-use n3tw0rk\phpfeather\abstraction\Model;
+use n3tw0rk\phpfeather\Abstraction\Model;
 
 /**
  *	Object Pool	
@@ -59,9 +59,9 @@ class ObjectPool
 	 */
 	private function __clone(){}
 
-	public function &getWorker( $worker = null )
+	public static function &getWorker( $worker = null )
 	{
-		if( is_null( $worker ) || !array_key_exists( $worker, self::$workerPool ) )
+		if( empty( $worker ) || !array_key_exists( $worker, self::$workerPool ) )
 		{
 			return self::$null;
 		}
@@ -69,21 +69,43 @@ class ObjectPool
 		return self::$workerPool[ $worker ];
 	}
 	
-	public function &addModel( $name = null, &$model = null )
+	public static function &addWorker( $name = null, &$worker = null )
 	{
-		if( !isset( $name ) || !isset( $model ) || !( $model instanceof Model ) )
+		if( empty( $name ) || empty( $worker ) || !( $worker instanceof Worker ) )
 		{
 			return self::$null;
 		}
 
-		self::$modelPool[ $name ] = $model;
+		self::$workerPool[ $name ] = $worker;
 
-		return self::$modelPool[ $name ];
+		return self::$workerPool[ $name ];
+	}
+
+	public static function &getConfig( $config = null )
+	{
+		if( empty( $config ) || !array_key_exists( $config, self::$configPool ) )
+		{
+			return self::$null;
+		}
+
+		return self::$configPool[ $config ];
 	}
 	
-	public function &getLibrary( $library = null )
+	public static function &addConfig( $name = null, &$config = null )
 	{
-		if( !isset( $library ) || !array_key_exists( $library, self::$libraryPool ) )
+		if( empty( $name ) || empty( $config )  )
+		{
+			return self::$null;
+		}
+
+		self::$configPool[ $name ] = $config;
+
+		return self::$configPool[ $name ];
+	}
+	
+	public static function &getLibrary( $library = null )
+	{
+		if( empty( $library ) || !array_key_exists( $library, self::$libraryPool ) )
 		{
 			return self::$null;
 		}
@@ -91,9 +113,9 @@ class ObjectPool
 		return self::$libraryPool[ $library ];
 	}
 	
-	public function &addLibrary( $name = null, &$library = null )
+	public static function &addLibrary( $name = null, &$library = null )
 	{
-		if( !isset( $name ) || !isset( $library ) )
+		if( empty( $name ) || empty( $library ) )
 		{
 			return self::$null;
 		}
@@ -103,9 +125,9 @@ class ObjectPool
 		return self::$libraryPool[ $name ];
 	}
 
-	public function getRest( $rest = null )
+	public static function getRest( $rest = null )
 	{
-		if( !isset( $rest ) || !array_key_exists( $rest, self::$restPool ) )
+		if( empty( $rest ) || !array_key_exists( $rest, self::$restPool ) )
 		{
 			return self::$null;
 		}
@@ -113,9 +135,9 @@ class ObjectPool
 		return self::$restPool[ $rest ];
 	}
 
-	public function &addRest( $name = null, &$rest = null )
+	public static function &addRest( $name = null, &$rest = null )
 	{
-		if( !isset( $name ) || !isset( $rest ) )
+		if( empty( $name ) || empty( $rest ) )
 		{
 			return self::$null;
 		}
@@ -127,7 +149,7 @@ class ObjectPool
 
 	public static function &instance()
 	{
-		if( is_null( self::$instance ) || !( self::$instance instanceof ObjectPool ) )
+		if( empty( self::$instance ) || !( self::$instance instanceof ObjectPool ) )
 		{
 			self::$instance = new ObjectPool();
 		}
