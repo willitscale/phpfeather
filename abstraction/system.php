@@ -58,6 +58,23 @@ abstract class System
 	}
 
 	/**
+	 * Worker Method
+	 *
+	 * @param String
+	 * @param String
+	 * @return void
+	 */
+	public function worker( $worker = null, $local = null )
+	{
+		if( empty( $local ) )
+		{
+			$local = $worker;
+		}
+
+		$this->{$local} = Application::getWorker( $worker );
+	}
+
+	/**
 	 * View Method
 	 *
 	 * @param String

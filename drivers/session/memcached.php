@@ -1,15 +1,8 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Drivers\Session;
 
-namespace uk\co\n3tw0rk\phpfeather\drivers\session;
+use n3tw0rk\phpfeather\Abstraction\Session;
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-include_once( 'abstract/session.php' );
-
-class PHPF_MemcachedDriver extends PHPF_Session
+class Memcached extends Session
 {
 
 }

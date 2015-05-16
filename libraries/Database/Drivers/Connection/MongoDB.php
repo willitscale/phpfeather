@@ -1,24 +1,20 @@
-<?php namespace n3tw0rk\phpfeather\drivers\connection;
+<?php namespace n3tw0rk\phpfeather\Libraries\Database\Drivers\Connection;
 
-include_once( 'abstraction/connection.php' );
-include_once( 'drivers/results/mongodb.php' );
-include_once( 'exceptions/database.php' );
+use n3tw0rk\phpfeather\Libraries\Database\Exceptions\Database as DatabaseException;
+use n3tw0rk\phpfeather\Libraries\Database\Abstraction\Connection;
 
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
-use uk\co\n3tw0rk\phpfeather\abstraction\Connection;
-
-class MongodbDriver extends Connection
+class Mongodb extends Connection
 {
 	/**
 	 * Connect Method
 	 *
-	 * @throws PHPF_DatabaseException
+	 * @throws DatabaseException
 	 */
 	public function connect()
 	{
 		if( !class_exists( 'MongoClient' ) )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( MONGO_DB_NOT_INSTALLED );
+			throw new DatabaseException( MONGO_DB_NOT_INSTALLED );
 		}
 		
 		$connectionString = 'mongodb://';
@@ -46,7 +42,7 @@ class MongodbDriver extends Connection
 		}
 		catch( Exception $exception )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_CREDENTIALS );
+			throw new DatabaseException( INVALID_DB_CREDENTIALS );
 		}
 		
 		try
@@ -55,7 +51,7 @@ class MongodbDriver extends Connection
 		}
 		catch( Exception $exception )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( DATABASE_NOT_EXISTS );
+			throw new DatabaseException( DATABASE_NOT_EXISTS );
 		}
 		
 		$this->connected = true;

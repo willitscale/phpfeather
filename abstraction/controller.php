@@ -19,6 +19,8 @@ abstract class Controller extends System
 	public function __construct()
 	{
 		parent::__construct();
+
+		Application::inject( $this );
 		
 		$this->controller = Application::getControllerString();
 		$this->action = Application::getActionString();

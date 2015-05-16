@@ -1,32 +1,21 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Libraries\Database\Drivers\Connection;
 
-namespace uk\co\n3tw0rk\phpfeather\drivers\connection;
+use n3tw0rk\phpfeather\Libraries\Database\Abstraction\Connection;
+use n3tw0rk\phpfeather\Libraries\Database\Exceptions\DatabaseException;
+use n3tw0rk\phpfeather\Libraries\Database\Drivers\Results\Mysqli AS Results;
 
-if( !defined( 'SYSTEM_ACCESS' ) )
+class MySQLi extends Connection
 {
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-include_once( 'abstraction/connection.php' );
-include_once( 'drivers/results/mysqli.php' );
-
-use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
-use uk\co\n3tw0rk\phpfeather\drivers\results AS RESULTS;
-
-class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
-{
-
 	/**
 	 * Connect Method
 	 *
-	 * @throws PHPF_DatabaseException
+	 * @throws DatabaseException
 	 */
 	public function connect()
 	{
 		if( !class_exists( 'mysqli' ) )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( MYSQLI_NOT_INSTALLED );
+			throw new DatabaseException( MYSQLI_NOT_INSTALLED );
 		}
 		
 		$this->connection = new \mysqli( $this->host, $this->user, 
@@ -34,7 +23,7 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 
 		if( 0 !== @$this->connection->connect_errno )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_DB_CREDENTIALS );
+			throw new DatabaseException( INVALID_DB_CREDENTIALS );
 		}
 		else
 		{
@@ -53,7 +42,7 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 	public function query()
 	{
 		$params = func_get_args();
-		return new RESULTS\PHPF_MysqliResults( $this->connection->query( 
+		return new Results( $this->connection->query( 
 			call_user_func_array( array( $this, 'queryString' ), $params ) ) );
 	}
 	
@@ -85,7 +74,7 @@ class PHPF_MysqliDriver extends ABSTRACTION\PHPF_Connection
 			$result = $this->connection->store_result();
 			if( $result )
 			{
-				$multiResult = new RESULTS\PHPF_MysqliResults( $result );
+				$multiResult = new Results( $result );
 				$results->returned []= $multiResult->current();
 				$result->free();
 			}

@@ -1,15 +1,15 @@
-<?php namespace n3tw0rk\phpfeather\Helpers;
+<?php namespace n3tw0rk\phpfeather\Libraries\Database\Helpers;
 
 /**
- *	Utils Helper
+ *	Sanitizer Helper Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Helpers
+ *	@package n3tw0rk\phpfeather\Database\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class Utils
+class Sanitizer
 {
 	public static function escape( $string = null )
 	{
@@ -35,7 +35,7 @@ class Utils
 		}
 
 		$matches = null;
-		$escaped = array();
+		$escaped = [];
 
 		preg_match_all( '/[^%](?<flags>%[0-9\$\.+ -]*[bcdeEfFgGorsSuxX])/m', $args[ 0 ], $matches );
 
@@ -90,7 +90,7 @@ class Utils
 						}
 						else
 						{
-							$args[ $escape ] = PHPF_UTILS::escape( strval( $args[ $escape ] ) );
+							$args[ $escape ] = self::escape( strval( $args[ $escape ] ) );
 						}
 						break;
 					}
@@ -106,7 +106,7 @@ class Utils
 		unset( $matches );
 
 		$args[ 0 ] = preg_replace( '/%([0-9\$]*)s/m', '\'$0\'', $args[ 0 ] );
-		$args[ 0 ] = preg_replace( '/(%([0-9\$]*)r)/m', '%$2s', $args[ 0 ] );
+		$args[ 0 ] = preg_replace( '/((^%)%([0-9\$]*)r)/m', '%$2s', $args[ 0 ] );
 
 		return call_user_func_array( 'sprintf', $args );
 	}

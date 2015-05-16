@@ -1,13 +1,8 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\drivers\nosql;
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
+use uk\co\n3tw0rk\phpfeather\Abstraction\NoSQLConnection;
 
-include_once( 'abstract/nosqlconnection.php' );
-
-class PHPF_MongoDBDriver extends PHPF_NoSQLConnection
+class MongoDB extends NoSQLConnection
 {
 
 	public function __construct()

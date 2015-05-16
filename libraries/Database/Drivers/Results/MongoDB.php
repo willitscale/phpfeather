@@ -1,28 +1,19 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Libraries\Database\Drivers\Results;
 
-namespace uk\co\n3tw0rk\phpfeather\drivers\results;
+use n3tw0rk\phpfeather\Libraries\Database\Abstraction\Results;
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-include_once( 'abstraction/results.php' );
-
-use uk\co\n3tw0rk\phpfeather\abstraction as ABSTRACTION;
-
-class PHPF_MysqliResults extends ABSTRACTION\PHPF_Results
+class MongodbResults extends Results
 {
 
-	public function __construct( $mysqliResults = null )
+	public function __construct( $mongodbResults = null )
 	{
-		$this->resultSet = $mysqliResults;
+		$this->resultSet = $mongodbResults;
 		$this->returnType = RESULT_ARRAY;
 	}
 
 	public function count()
 	{
-		if( empty( $this->resultSet ) )
+		if( !$this->resultSet )
 		{
 			return 0;
 		}
@@ -70,7 +61,9 @@ class PHPF_MysqliResults extends ABSTRACTION\PHPF_Results
 
 	public function valid()
 	{
-		return ( 0 <= $this->position && $this->count() > $this->position && $this->resultSet->data_seek( $this->position ) );
+		return ( 0 <= $this->position && 
+			$this->count() > $this->position && 
+			$this->resultSet->data_seek( $this->position ) );
 	}
 
 }

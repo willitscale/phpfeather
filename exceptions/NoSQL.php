@@ -1,7 +1,7 @@
 <?php namespace n3tw0rk\phpfeather\exceptions;
 
 /**
- * Session Exception Class
+ * No SQL Exception Class
  *
  * @version 0.1.1
  * @package n3tw0rk\phpfeather\exceptions
@@ -9,4 +9,4 @@
  * @license GPL v2
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class SessionException extends \Exception{}
+class NoSQL extends \Exception {}

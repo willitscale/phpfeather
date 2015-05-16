@@ -1,7 +1,7 @@
 <?php namespace n3tw0rk\phpfeather\Exceptions;
 
 /**
- * Application Exception Class
+ * Cache Exception Class
  *
  * @version 0.1.1
  * @package n3tw0rk\phpfeather\Exceptions
@@ -9,4 +9,5 @@
  * @license GPL v2
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class ApplicationException extends \Exception{}
+class Cache extends \Exception{}
+

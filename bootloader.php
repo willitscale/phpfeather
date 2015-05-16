@@ -20,14 +20,16 @@ spl_autoload_register( function ( $class )
 
 	if( file_exists( $file ) )
 	{
-		require $file;
+		require_once( $file );
+		return;
 	}
 
 	// Try the framework last
 	$file = $base_dir . str_replace( '\\', '/', $relative ) . '.php';
 
-	if (file_exists($file)) {
-		require $file;
+	if( file_exists( $file ) )
+	{
+		require_once( $file );
+		return;
 	}
-	
 });

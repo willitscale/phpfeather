@@ -1,7 +1,7 @@
-<?php namespace n3tw0rk\phpfeather\system;
+<?php namespace n3tw0rk\phpfeather\System;
 
-use n3tw0rk\phpfeather\abstraction as Abstraction;
-use n3tw0rk\phpfeather\exceptions as Exception;
+use n3tw0rk\phpfeather\Abstraction as Abstraction;
+use n3tw0rk\phpfeather\Exceptions as Exception;
 use n3tw0rk\phpfeather\Helpers as Helpers;
 
 /**
@@ -175,7 +175,7 @@ class Application
 	{
 		if( !( $instance instanceof Abstraction\System ) )
 		{
-			return 0;
+			return;
 		}
 
 		$autoload = self::getConfig( 'Autoload' );
@@ -183,6 +183,21 @@ class Application
 		foreach( $autoload AS $local => $library )
 		{
 			$instance->library( $library, $local );
+		}
+	}
+	
+	public static function inject( $instance = null )
+	{
+		if( !( $instance instanceof Abstraction\Controller ) )
+		{
+			return;
+		}
+
+		$vial = self::getConfig( 'Injectors' );
+		
+		foreach( $vial AS $local => $worker )
+		{
+			$instance->worker( $worker, $local );
 		}
 	}
 
@@ -204,6 +219,7 @@ class Application
 		}
 
 		$reflection = new \ReflectionMethod( $controller, $action );
+
 		if( $reflection->isPrivate() )
 		{
 			return 0;
@@ -233,7 +249,7 @@ class Application
 
 		try
 		{
-			$object = new $library();
+			$object = new $library;
 		}
 		catch( Exception $e )
 		{
@@ -261,13 +277,10 @@ class Application
 			throw new Exception\ApplicationException( INVALID_MODEL );
 		}
 
-		$path = self::getPath( MODEL_DIR, strtolower( $model ) );
-
-		require_once( $path );
-
 		try
 		{
-			$object = new $model();
+			$model = "n3tw0rk\\phpfeather\\Models\\" . $model;
+			$object = new $model;
 		}
 		catch( Exception $e )
 		{
@@ -275,12 +288,55 @@ class Application
 			{
 				self::exceptionHandler( $e );
 			}
-			throw new Exception\ApplicationException( sprintf( MODEL_NOT_EXIST, $controller ) );
+			throw new Exception\ApplicationException( sprintf( MODEL_NOT_EXIST, $model ) );
 		}
 
 		if( !( $object instanceof Abstraction\Model ) )
 		{
 			throw new Exception\ApplicationException( INVALID_MODEL );
+		}
+
+		return $object;
+	}
+
+	/**
+	 * Get Model Method
+	 * 
+	 * @param string $model
+	 * @throws Exception\ApplicationException
+	 * @return Abstraction\Model
+	 */
+	public static function &getWorker( $worker = null )
+	{
+		if( empty( $worker ) )
+		{
+			throw new Exception\ApplicationException( INVALID_WORKER );
+		}
+
+		$object = ObjectPool::getWorker( $worker );
+
+		if( !empty( $object ) )
+		{
+			return $object;
+		}
+
+		try
+		{
+			$worker = "n3tw0rk\\phpfeather\\Workers\\" . $worker;
+			$object = new $worker;
+		}
+		catch( Exception $e )
+		{
+			if( APPLICATION_RELEASE == DEVELOPMENT )
+			{
+				self::exceptionHandler( $e );
+			}
+			throw new Exception\ApplicationException( sprintf( WORKER_NOT_EXIST, $worker ) );
+		}
+
+		if( !( $object instanceof Abstraction\Worker ) )
+		{
+			throw new Exception\ApplicationException( INVALID_WORKER );
 		}
 
 		return $object;

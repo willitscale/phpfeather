@@ -46,10 +46,6 @@ define( 'INVALID_CACHE_PORT', 'Invalid cache port attribute.', true );
 
 define( 'INVALID_DB_CREDENTIALS', 'Invalid database credentials have been provided.', true );
 
-define( 'RESULT_OBJECT',			0x01, true );
-define( 'RESULT_ARRAY',				0x02, true );
-define( 'RESULT_ASSOC',				0x03, true );
-
 define( 'RESULT_DEFAULT', 			RESULT_ASSOC, true );
 
 define( 'INVALID_FILE_REQUESTED',	'Invalid file requested.' );
