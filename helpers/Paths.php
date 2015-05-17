@@ -1,6 +1,6 @@
 <?php namespace n3tw0rk\phpfeather\Helpers;
 
-use n3tw0rk\phpfeather\exceptions\ApplicationException;
+use n3tw0rk\phpfeather\exceptions\Application as ApplicationException;
 
 /**
  *	Paths Helper
@@ -14,6 +14,8 @@ use n3tw0rk\phpfeather\exceptions\ApplicationException;
 class Paths
 {
 	const EXT = '.php';
+	
+	const INVALID_FILE_REQUESTED = 'Invalid File Requested';
 	
 	/**
 	 * Path Method
@@ -34,7 +36,7 @@ class Paths
 			return $path;
 		}
 
-		throw new ApplicationException( INVALID_FILE_REQUESTED );
+		throw new ApplicationException( self::INVALID_FILE_REQUESTED );
 	}
 
 	/**
@@ -45,6 +47,26 @@ class Paths
 	public static function application()
 	{
 		return $_SERVER[ 'DOCUMENT_ROOT' ];
+	}
+	
+	/**
+	 * Domain Method
+	 * 
+	 * @return string
+	 */
+	public static function domain()
+	{
+		return $_SERVER[ 'HTTP_HOST' ]; 
+	}
+	
+	/**
+	 * URI Method
+	 * 
+	 * @return string
+	 */
+	public static function uri()
+	{
+		return $_SERVER[ 'REQUEST_SCHEME' ] . '://' . self::domain(); 
 	}
 	
 	/**

@@ -8,7 +8,7 @@ use n3tw0rk\phpfeather\Helpers as Helpers;
  *	Application	Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\system
+ *	@package n3tw0rk\phpfeather\System
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,7 +58,7 @@ class Application
 	 */
 	public static function init( $controller = null, $action = null )
 	{
-		self::autoHelpers();
+		self::base();
 	
 		$controller = self::getControllerString( $controller );
 	
@@ -72,25 +72,25 @@ class Application
 		
 			if( 1 == self::canAccessAction( $object, $action ) )
 			{
-				$object->$action();
+				echo $object->$action();
 			}
 		}
 		else
 		{
-			$object->init();
+			echo $object->init();
 		}
 
 		unset( $action );
 		unset( $object );
 	}
 	
-	public static function autoHelpers()
+	protected static function base()
 	{
-		$helpers = self::getConfig( 'Helpers' );
+		$config = self::getConfig( 'Application' );
 		
-		foreach( $helpers AS $helper )
+		if( array_key_exists( 'namespace', $config ) )
 		{
-			self::getHelper( $helper );
+			$_SERVER[ 'APPLICATION_NS' ] = $config[ 'namespace' ] . '\\';
 		}
 	}
 	
@@ -136,7 +136,13 @@ class Application
 			$controller = Helpers\Input::getParam( 1 );
 		}
 
-		if( is_null( $controller ) )
+		// Don't permit invalid controller calls
+		if( preg_match( '/[^A-Za-z0-9]+/', $controller ) )
+		{
+			$controller = null;
+		}
+		
+		if( empty( $controller ) )
 		{
 			$controller = self::DEFAULT_CONTROLLER;
 		}
@@ -151,9 +157,15 @@ class Application
 			return self::$action;
 		}
 
-		if( empty( $controller ) )
+		if( empty( $action ) )
 		{
 			$action = Helpers\Input::getParam( 2 );
+		}
+
+		// Don't permit invalid action calls
+		if( preg_match( '/[^A-Za-z0-9]+/', $action ) )
+		{
+			$action = null;
 		}
 
 		if( empty( $action ) )
@@ -229,7 +241,7 @@ class Application
 	}
 	
 	/**
-	 * Base Path Method
+	 * Get Library Method
 	 *
 	 * @return uk\co\n3tw0rk\phpfeather\Abstraction\Library
 	 */
@@ -320,21 +332,19 @@ class Application
 			return $object;
 		}
 
-		try
+
+		$worker = $_SERVER[ 'APPLICATION_NS' ] . "Workers\\" . $worker;
+		@$object = new $worker;
+		
+		
+		if( empty( $object ) )
 		{
 			$worker = "n3tw0rk\\phpfeather\\Workers\\" . $worker;
-			$object = new $worker;
-		}
-		catch( Exception $e )
-		{
-			if( APPLICATION_RELEASE == DEVELOPMENT )
-			{
-				self::exceptionHandler( $e );
-			}
-			throw new Exception\ApplicationException( sprintf( WORKER_NOT_EXIST, $worker ) );
+			@$object = new $worker;
 		}
 
-		if( !( $object instanceof Abstraction\Worker ) )
+		if( empty( $object ) ||
+			!( $object instanceof Abstraction\Worker ) )
 		{
 			throw new Exception\ApplicationException( INVALID_WORKER );
 		}
@@ -373,10 +383,8 @@ class Application
 	{
 		if( empty( $view ) )
 		{
-			throw new Exception\ApplicationException( INVALID_VIEW );
+			throw new Exception\Application( INVALID_VIEW );
 		}
-
-		$path = self::getPath( VIEW_DIR, strtolower( $view ) );
 
 		if( is_object( $flags ) )
 		{
@@ -392,7 +400,7 @@ class Application
 		}
 
 		ob_start();
-		require( $path );
+		require( Helpers\Paths::path( 'Views/' . $view ) );
 		$contents = ob_get_contents();
 		ob_end_clean();
 
@@ -408,22 +416,17 @@ class Application
 
 		$object = null;
 
-		try
+		$controller = $_SERVER[ 'APPLICATION_NS' ] . "Controllers\\" . $controller;
+		$object = new $controller;
+
+		if( empty( $object ) )
 		{
 			$controller = "n3tw0rk\\phpfeather\\Controllers\\" . $controller;
-
-			$object = new $controller;
-		}
-		catch( Exception $e )
-		{
-			if( APPLICATION_RELEASE == DEVELOPMENT )
-			{
-				self::exceptionHandler( $e );
-			}
-			throw new Exception\ApplicationException( sprintf( CONTROLLER_NOT_EXIST, $controller ) );
+			@$object = new $controller;
 		}
 
-		if( !( $object instanceof Abstraction\Controller ) )
+		if( empty( $object ) || 
+			!( $object instanceof Abstraction\Controller ) )
 		{
 			throw new Exception\ApplicationException( INVALID_CONTROLLER );
 		}

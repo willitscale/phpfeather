@@ -65,7 +65,8 @@ abstract class Connection
 	public function queryString()
 	{
 		$args = func_get_args();
-		return forward_static_call_array( array( self::SANITIZER, 'qprintf' ), $args );
+		$callable = [ self::SANITIZER, 'qprintf' ];
+		return forward_static_call_array( $callable, $args );
 	}
 
 	/**

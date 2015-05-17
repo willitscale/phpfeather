@@ -1,14 +1,12 @@
-<?php namespace n3tw0rk\phpfeather\libraries;
+<?php namespace n3tw0rk\phpfeather\Libraries\Cache;
 
-include_once( 'exceptions/cache.php' );
-
-use n3tw0rk\phpfeather\system as SYSTEM;
-use n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use n3tw0rk\phpfeather\System as SYSTEM;
+use n3tw0rk\phpfeather\Exceptions\Cache as CacheException;
 
 /**
  *	Cache Library
  *
- *	@version 0.0.1
+ *	@version 0.1.1
  *	@package libraries\cache
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
@@ -61,12 +59,12 @@ class Cache
 		
 		if( !is_array( $attributes ) )
 		{
-			throw new EXCEPTIONS\PHPF_CacheException( INVALID_ATTRIBUTES );
+			throw new CacheException( INVALID_ATTRIBUTES );
 		}
 
 		if( !array_key_exists( 'driver', $attributes ) )
 		{
-			throw new EXCEPTIONS\PHPF_DatabaseException( INVALID_CACHE_DRIVER );
+			throw new CacheException( INVALID_CACHE_DRIVER );
 		}
 
 		$path = SYSTEM\PHPF_Application::getPath( DRIVER_CACHE_DIR, strtolower( $attributes[ 'driver' ] ) );
@@ -81,7 +79,7 @@ class Cache
 		}
 		catch( Exception $e )
 		{
-			throw new EXCEPTIONS\PHPF_CacheException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
+			throw new CacheException( sprintf( DRIVER_NOT_EXIST, $attributes[ 'driver' ] ) );
 		}
 		
 		$this->instances[ $name ]->connect();

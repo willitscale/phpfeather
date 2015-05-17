@@ -19,15 +19,14 @@ abstract class Controller extends System
 	public function __construct()
 	{
 		parent::__construct();
-
 		Application::inject( $this );
-		
+		$this->__base();
+	}
+	
+	protected function __base()
+	{
 		$this->controller = Application::getControllerString();
 		$this->action = Application::getActionString();
-		
-		$this->params[ 'title' ] = 'Title';
-		$this->params[ 'controller' ] = $this->controller;
-		$this->params[ 'action' ] = $this->action;
 	}
 
 	/**

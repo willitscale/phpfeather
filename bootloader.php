@@ -1,35 +1,63 @@
 <?php namespace n3tw0rk\phpfeather;
 
-spl_autoload_register( function ( $class )
+spl_autoload_register( function( $class )
 {
-	$framework = 'n3tw0rk\\phpfeather\\';
-
-	$base_dir = __DIR__ . '/';
-
-	$size = strlen( $framework );
+	if( BootLoader::application( $class ) )
+	{
+		return;
+	}
 	
-	if( 0 !== strncmp( $framework, $class, $size ) )
+	BootLoader::framework( $class );
+} );
+
+/**
+ * Boot Loader Class
+ * 
+ *	@version 0.1.1
+ *	@package n3tw0rk\phpfeather
+ *	@author James Lockhart james@n3tw0rk.co.uk
+ *	@license GPL v2
+ *	@license http://www.gnu.org/licenses/gpl-2.0.html
+ */
+class BootLoader
+{
+	const FRAMEWORK_NS = 'n3tw0rk\\phpfeather\\';
+	
+	public static function application( $class )
 	{
-		return;
+		if( empty( $_SERVER[ 'APPLICATION_NS' ] ) )
+		{
+			return false;
+		}
+
+		return self::load( $class, $_SERVER[ 'APPLICATION_NS' ], 
+			$_SERVER[ 'DOCUMENT_ROOT' ] );
 	}
-
-	$relative = substr( $class, $size );
-
-	// Try the application first
-	$file = $_SERVER[ 'DOCUMENT_ROOT' ] . str_replace( '\\', '/', $relative ) . '.php';
-
-	if( file_exists( $file ) )
+	
+	public static function framework( $class )
 	{
-		require_once( $file );
-		return;
+		return self::load( $class, self::FRAMEWORK_NS,  __DIR__ . '/' );
 	}
-
-	// Try the framework last
-	$file = $base_dir . str_replace( '\\', '/', $relative ) . '.php';
-
-	if( file_exists( $file ) )
+	
+	protected static function load( $class, $namespace, $directory )
 	{
-		require_once( $file );
-		return;
+		$size = strlen( $namespace );
+
+		if( 0 !== strncmp( $namespace, $class, $size ) )
+		{
+			return false;
+		}
+
+		$relative = substr( $class, $size );
+		
+		$file = $directory . str_replace( '\\', '/', $relative ) . '.php';
+
+		if( file_exists( $file ) )
+		{
+			require_once( $file );
+			return true;
+		}
+
+		return false;
 	}
-});
+}

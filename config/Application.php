@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Helpers Config
+ * Application Config
  */
 return 
 [
-
 ];

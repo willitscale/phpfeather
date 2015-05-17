@@ -89,7 +89,7 @@ class Input
 		{
 	
 			$routing = Application::getConfig( 'Routing' );
-				
+			
 			$args = '';
 	
 			if( array_key_exists( 'u', $_GET ) )
@@ -99,9 +99,9 @@ class Input
 	
 			foreach( $routing AS $from => $to )
 			{
-				if( false !== stripos( $args, $from ) )
+				if( preg_match( $from, $args ) )
 				{
-					$args = str_ireplace( $from, $to, $args );
+					$args = preg_replace( $from, $to, $args );
 				}
 			}
 	
