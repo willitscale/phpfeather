@@ -11,10 +11,11 @@
  */
 class HTTP
 {
-	const CODES = 
+	public static $codes = 
 	[
 		'100'	=>	'Continue',
 		'101'	=>	'Switching Protocols',
+		# Good
 		'200'	=>	'OK',
 		'201'	=>	'Created',
 		'202'	=>	'Accepted',
@@ -22,6 +23,7 @@ class HTTP
 		'204'	=>	'No Content',
 		'205'	=>	'Reset Content',
 		'206'	=>	'Partial Content',
+		# Moved
 		'300'	=>	'Multiple Choices',
 		'301'	=>	'Moved Permanently',
 		'302'	=>	'Found',
@@ -30,6 +32,7 @@ class HTTP
 		'305'	=>	'Use Proxy',
 		'306'	=>	'(Unused)',
 		'307'	=>	'Temporary Redirect',
+		# User Error
 		'400'	=>	'Bad Request',
 		'401'	=>	'Unauthorized',
 		'402'	=>	'Payment Required',
@@ -48,19 +51,72 @@ class HTTP
 		'415'	=>	'Unsupported Media Type',
 		'416'	=>	'Requested Range Not Satisfiable',
 		'417'	=>	'Expectation Failed',
+		# Server Error
 		'500'	=>	'Internal Server Error',
 		'501'	=>	'Not Implemented',
 		'502'	=>	'Bad Gateway',
 		'503'	=>	'Service Unavailable',
 		'504'	=>	'Gateway Timeout',
-		'505'	=>	'HTTP Version Not Supported'
+		'505'	=>	'HTTP Version Not Supported',
 	];
+
+	public static $responses = 
+	[
+		'Access-Control-Allow-Origin',
+		'Accept-Patch',
+		'Accept-Ranges',
+		'Age',
+		'Allow',
+		'Cache-Control',
+		'Connection',
+		'Content-Disposition',
+		'Content-Encoding',
+		'Content-Language',
+		'Content-Length',
+		'Content-Location',
+		'Content-MD5',
+		'Content-Range',
+		'Content-Type',
+		'Date',
+		'ETag',
+		'Expires',
+		'Last-Modified',
+		'Link',
+		'Location',
+		'P3P',
+		'Pragma',
+		'Proxy-Authenticate',
+		'Public-Key-Pins',
+		'Refresh',
+		'Retry-After',
+		'Server',
+		'Set-Cookie',
+		'Status',
+		'Strict-Transport-Security',
+		'Trailer',
+		'Transfer-Encoding',
+		'Upgrade',
+		'Vary',
+		'Via',
+		'Warning',
+		'WWW-Authenticate',
+		'X-Frame-Options',
+	];
+
+	public static function header( $type, $value )
+	{
+		if( !in_array( $type, self::$responses ) )
+		{
+			return;
+		}
+
+		header( $type . ': ' . $value );
+	}
 
 	public static function redirect( $url, $httpCode = '307' )
 	{
-		header( sprintf( 'Location: %s', $url ) );
-		header( sprintf( 'Status: %s %s', $httpCode, self::CODES[ $httpCode ] ) );
-		header( sprintf( 'HTTP/1.0 %s %s', $httpCode, self::CODES[ $httpCode ] ) );
+		self::header( 'Location',  $url );
+		self::header( 'Status ', $httpCode . ' ' . self::$codes[ $httpCode ] );
 	}
 	
 	public static function ip()

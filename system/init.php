@@ -39,16 +39,19 @@ class Init
 
 	private static function debug( $exception )
 	{
+				printf( '<pre>%s</pre>', $exception->getMessage() );
+				/*
 		switch( APPLICATION_RELEASE )
 		{
-			case DEVELOPMENT : 
+			case self::DEVELOPMENT : 
 				printf( '<pre>%s</pre>', $exception->getMessage() );
 				break;
 	
-			case TESTING : 
-			case PRODUCTION : 
+			case self::TESTING : 
+			case self::PRODUCTION : 
 				include_once( 'static/html/404.html' );
 				break;
 		}
+		*/
 	}
 }

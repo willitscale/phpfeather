@@ -21,19 +21,19 @@ abstract class Results implements \Countable, \Iterator
 
 	public function fetchArray()
 	{
-		$this->returnType = RESULT_ARRAY;
+		$this->returnType = self::RESULT_ARRAY;
 		return $this;
 	}
 	
 	public function fetchObject()
 	{
-		$this->returnType = RESULT_OBJECT;
+		$this->returnType = self::RESULT_OBJECT;
 		return $this;
 	}
 	
 	public function fetchAssoc()
 	{
-		$this->returnType = RESULT_ASSOC;
+		$this->returnType = self::RESULT_ASSOC;
 		return $this;
 	}
 
