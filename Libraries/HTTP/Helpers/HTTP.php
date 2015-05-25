@@ -1,10 +1,10 @@
-<?php namespace n3tw0rk\phpfeather\Helpers;
+<?php namespace n3tw0rk\phpfeather\Libraries\HTTP\Helpers;
 
 /**
  *	HTTP Helper
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Helpers
+ *	@package n3tw0rk\phpfeather\Libraries\HTTP\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
@@ -113,7 +113,7 @@ class HTTP
 		header( $type . ': ' . $value );
 	}
 
-	public static function redirect( $url, $httpCode = '307' )
+	public static function redirect( $url, $httpCode = '304' )
 	{
 		self::header( 'Location',  $url );
 		self::header( 'Status ', $httpCode . ' ' . self::$codes[ $httpCode ] );

@@ -1,4 +1,4 @@
-<?php namespace n3tw0rk\phpfeather\Helpers;
+<?php namespace n3tw0rk\phpfeather\Libraries\HTTP\Helpers;
 
 use n3tw0rk\phpfeather\system\Application;
 
@@ -6,7 +6,7 @@ use n3tw0rk\phpfeather\system\Application;
  *	Input Helper
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Helpers
+ *	@package n3tw0rk\phpfeather\Libraries\HTTP\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

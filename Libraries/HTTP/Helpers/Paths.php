@@ -1,4 +1,4 @@
-<?php namespace n3tw0rk\phpfeather\Helpers;
+<?php namespace n3tw0rk\phpfeather\Libraries\HTTP\Helpers;
 
 use n3tw0rk\phpfeather\exceptions\Application as ApplicationException;
 
@@ -6,7 +6,7 @@ use n3tw0rk\phpfeather\exceptions\Application as ApplicationException;
  *	Paths Helper
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Helpers
+ *	@package n3tw0rk\phpfeather\Libraries\HTTP\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,7 +35,7 @@ class Paths
 		{
 			return $path;
 		}
-
+		
 		throw new ApplicationException( self::INVALID_FILE_REQUESTED );
 	}
 
@@ -76,6 +76,6 @@ class Paths
 	 */
 	public static function framework()
 	{
-		return str_replace( 'Helpers', '', __DIR__ );
+		return __DIR__ . '/../../../';
 	}
 }

@@ -15,6 +15,7 @@ use n3tw0rk\phpfeather\Libraries\Database\Exceptions AS Exceptions;
 class Database
 {
 	const DB_EXCEPTION = 'n3tw0rk\\phpfeather\\Libraries\\Database\\Exceptions\\';
+
 	const DB_CONNECTION = 'n3tw0rk\\phpfeather\\Libraries\\Database\\Drivers\\Connection\\';
 	
 	/**

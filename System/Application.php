@@ -2,7 +2,7 @@
 
 use n3tw0rk\phpfeather\Abstraction as Abstraction;
 use n3tw0rk\phpfeather\Exceptions as Exception;
-use n3tw0rk\phpfeather\Helpers as Helpers;
+use n3tw0rk\phpfeather\Libraries\HTTP\Helpers as Helpers;
 
 /**
  *	Application	Class
@@ -350,25 +350,6 @@ class Application
 		}
 
 		return $object;
-	}
-
-	/**
-	 * Get Helper Method
-	 * 
-	 * @param string $helper
-	 * @throws Exception\ApplicationException
-	 * @return void
-	 */
-	public static function getHelper( $helper )
-	{
-		if( empty( $helper ) )
-		{
-			throw new Exception\ApplicationException( INVALID_HELPER );
-		}
-
-		$path = self::getPath( HELPER_DIR, strtolower( $helper ) );
-
-		require_once( $path );
 	}
 
 	/**

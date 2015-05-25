@@ -54,7 +54,6 @@ class Sessions
 		}
 		
 		$this->driver->start();
-	
 	}
 	
 	/**

@@ -91,24 +91,13 @@ abstract class System
 		return Application::getView( $view, $params );
 	}
 
-        /**
-         * Helper Method
-         *
-         * @param String
-         * @return Mixed 
-         */
-	public function helper( $helper = null )
-	{
-		return Application::getHelper( $helper );
-	}
-	
-        /**
-         * Render Method
-         *
-         * @param String
-         * @param Array
-         * @return void
-         */
+	/**
+	 * Render Method
+	 *
+	 * @param String
+	 * @param Array
+	 * @return void
+	 */
 	public function render( $view = null, &$params = [] )
 	{
 		if( !is_array( $params ) )
