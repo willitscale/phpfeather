@@ -1,14 +1,14 @@
-<?php namespace n3tw0rk\phpfeather\Libraries\Database\Exceptions;
+<?php namespace n3tw0rk\phpfeather\Libraries\Sessions\Exceptions;
 
 use n3tw0rk\phpfeather\Exceptions\Application;
 
 /**
- * Database Exception Class
+ * Session Exception Class
  *
  * @version 0.1.1
- * @package n3tw0rk\phpfeather\Libraries\Database\Exceptions
+ * @package n3tw0rk\phpfeather\Libraries\Sessions\Exceptions
  * @author James Lockhart james@n3tw0rk.co.uk
  * @license GPL v2
  * @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class Database extends Application {}
+class Session extends Application{}

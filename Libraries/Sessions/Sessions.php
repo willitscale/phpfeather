@@ -1,24 +1,22 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Libraries\Sessions;
 
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+use n3tw0rk\phpfeather\System\Application;
+use n3tw0rk\phpfeather\Libraries\Sessions\Exceptions AS Exceptions;
 
 /**
  *	Session Library
  *
  *	@version 0.0.1
- *	@package libraries\sessions
+ *	@package n3tw0rk\phpfeather\Libraries\Sessions
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_Sessions
+class Sessions
 {
+	const SESSION_EXCEPTION = 'n3tw0rk\\phpfeather\\Libraries\\Sessions\\Exceptions\\';
+	const SESSION_DRIVER = 'n3tw0rk\\phpfeather\\Libraries\\Sessions\\Drivers\\';
+
 	/** */
 	private $driver;
 	
@@ -35,29 +33,24 @@ class PHPF_Sessions
 	 *
 	 * @return void
 	 */
-	public function init()
+	protected function init()
 	{
-		global $session;
-		
-		$driverName = 'php';
+		$session = Application::getConfig( 'Session' );
 
-		if( array_key_exists( 'type', $session ) )
+		$driver = 'php';
+		if( array_key_exists( 'driver', $session ) )
 		{
-			$driverName = $session[ 'type' ];
+			$driver = $session[ 'driver' ];
 		}
-
-		$path = SYSTEM\PHPF_Application::getPath( DRIVER_SES_DIR, strtolower( $driverName ) );
-
-		require_once( $path );
 
 		try
 		{
-			$class = ucfirst( $driverName ) . 'Driver';
-			$this->driver = new $class();
+			$class = self::SESSION_DRIVER . $driver;
+			$this->driver = new $class;
 		}
 		catch( Exception $e )
 		{
-			throw new EXCEPTIONS\PHPF_SessionException( sprintf( DRIVER_NOT_EXIST, $driverName ) );
+			throw new Exceptions\SessionDriver;
 		}
 		
 		$this->driver->start();

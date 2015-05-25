@@ -79,7 +79,7 @@ class Application
 		{
 			echo $object->init();
 		}
-
+		
 		unset( $action );
 		unset( $object );
 	}

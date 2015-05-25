@@ -7,7 +7,7 @@ use n3tw0rk\phpfeather\Exceptions\Cache as CacheException;
  *	Cache Library
  *
  *	@version 0.1.1
- *	@package libraries\cache
+ *	@package n3tw0rk\phpfeather\Libraries\Cache
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

@@ -83,6 +83,11 @@ abstract class System
 	 */
 	public function view( $view = null, &$params = [] )
 	{
+		if( empty( $params ) )
+		{
+			$params = $this->params;
+		}
+		
 		return Application::getView( $view, $params );
 	}
 

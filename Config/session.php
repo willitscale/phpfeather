@@ -1,9 +1,0 @@
-<?php
-
-/**
- * Session Config
- */
-return 
-[
-
-];

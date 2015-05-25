@@ -106,7 +106,7 @@ class Sanitizer
 		unset( $matches );
 
 		$args[ 0 ] = preg_replace( '/%([0-9\$]*)s/m', '\'$0\'', $args[ 0 ] );
-		$args[ 0 ] = preg_replace( '/((^%)%([0-9\$]*)r)/m', '%$2s', $args[ 0 ] );
+		$args[ 0 ] = preg_replace( '/((^%)?%([0-9\$]*)r)/m', '%$2s', $args[ 0 ] );
 
 		return call_user_func_array( 'sprintf', $args );
 	}

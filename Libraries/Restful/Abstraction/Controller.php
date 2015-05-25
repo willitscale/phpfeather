@@ -1,17 +1,18 @@
-<?php namespace n3tw0rk\phpfeather\Abstraction;
+<?php namespace n3tw0rk\phpfeather\Libraries\Restful\Abstraction;
 
+use n3tw0rk\phpfeather\Abstraction\Controller AS SystemController;
 use n3tw0rk\phpfeather\System\Application;
 
 /**
  *	Restful Controller Abstract Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Abstraction
+ *	@package n3tw0rk\phpfeather\Libraries\Restful\Abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class RestfulController extends Controller
+abstract class Controller extends SystemController
 {
 	public function __construct()
 	{

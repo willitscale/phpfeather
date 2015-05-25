@@ -47,10 +47,10 @@ class Database
 	
 	public function __construct()
 	{
-		$this->autoloadDatabases();
+		$this->init();
 	}
 
-	public function autoloadDatabases()
+	protected function init()
 	{
 		$database = Application::getConfig( 'Database' );
 
@@ -62,7 +62,7 @@ class Database
 	
 	public function createInstance( $name = null, $attributes = [] )
 	{
-		if( is_null( $name ) )
+		if( empty( $name ) )
 		{
 			$name = 'default';
 		}
