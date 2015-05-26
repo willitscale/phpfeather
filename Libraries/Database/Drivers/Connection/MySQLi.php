@@ -2,7 +2,7 @@
 
 use n3tw0rk\phpfeather\Libraries\Database\Abstraction\Connection;
 use n3tw0rk\phpfeather\Libraries\Database\Exceptions\DatabaseException;
-use n3tw0rk\phpfeather\Libraries\Database\Drivers\Results\Mysqli AS Results;
+use n3tw0rk\phpfeather\Libraries\Database\Drivers\Results\MySQLi AS Results;
 
 class MySQLi extends Connection
 {

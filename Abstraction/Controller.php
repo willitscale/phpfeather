@@ -25,7 +25,7 @@ abstract class Controller extends System
 	
 	protected function __base()
 	{
-		$this->controller = Application::getControllerString();
+		$this->controller = ucfirst( Application::getControllerString() );
 		$this->action = Application::getActionString();
 	}
 

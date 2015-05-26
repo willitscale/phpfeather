@@ -62,7 +62,7 @@ class Application
 	
 		$controller = self::getControllerString( $controller );
 	
-		$object = self::getController( $controller );
+		$object = self::getController( ucfirst( $controller ) );
 
 		unset( $controller );
 

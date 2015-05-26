@@ -1,6 +1,6 @@
 <?php namespace n3tw0rk\phpfeather\Libraries\HTTP\Helpers;
 
-use n3tw0rk\phpfeather\exceptions\Application as ApplicationException;
+use n3tw0rk\phpfeather\Exceptions\Application as ApplicationException;
 
 /**
  *	Paths Helper
