@@ -50,7 +50,7 @@ class BootLoader
 
 		$relative = substr( $class, $size );
 		
-		$file = $directory . str_replace( '\\', '/', $relative ) . '.php';
+		$file = $directory . '/' . str_replace( '\\', '/', $relative ) . '.php';
 
 		if( file_exists( $file ) )
 		{

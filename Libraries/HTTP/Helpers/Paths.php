@@ -46,7 +46,7 @@ class Paths
 	 */
 	public static function application()
 	{
-		return $_SERVER[ 'DOCUMENT_ROOT' ];
+		return $_SERVER[ 'DOCUMENT_ROOT' ] . '/';
 	}
 	
 	/**
