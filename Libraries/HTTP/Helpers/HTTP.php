@@ -124,6 +124,11 @@ class HTTP
 		return $_SERVER[ 'REMOTE_ADDR' ];
 	}
 	
+	public static function referer()
+	{
+		return $_SERVER[ 'HTTP_REFERER' ];
+	}
+	
 	public static function url( $params = array(), $full = false )
 	{
 		$urn = '';
