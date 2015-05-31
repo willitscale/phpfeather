@@ -1,9 +1,0 @@
-<?php
-
-/**
- * Cookie Config
- */
-return 
-[
-
-];

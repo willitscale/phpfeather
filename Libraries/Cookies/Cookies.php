@@ -1,10 +1,10 @@
-<?php namespace n3tw0rk\phpfeather\Libraries\Sessions;
+<?php namespace n3tw0rk\phpfeather\Libraries\Cookies;
 
 use n3tw0rk\phpfeather\System\Application;
-use n3tw0rk\phpfeather\Libraries\Sessions\Exceptions AS Exceptions;
+use n3tw0rk\phpfeather\Libraries\Cookies\Exceptions AS Exceptions;
 
 /**
- *	Session Library
+ *	Cookies Library
  *
  *	@version 0.0.1
  *	@package n3tw0rk\phpfeather\Libraries\Sessions
@@ -12,48 +12,36 @@ use n3tw0rk\phpfeather\Libraries\Sessions\Exceptions AS Exceptions;
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class Sessions
+class Cookies
 {
-	const SESSION_DRIVER = 'n3tw0rk\\phpfeather\\Libraries\\Sessions\\Drivers\\';
+	const COOKIES_DRIVER = 'n3tw0rk\\phpfeather\\Libraries\\Cookies\\Drivers\\';
 
-	/** */
-	private $driver;
-	
-	/**
-	 * Constructor Sub-Routine
-	 */
 	public function __construct()
 	{
 		$this->init();
+	
 	}
 	
-	/**
-	 * Init Method
-	 *
-	 * @return void
-	 */
-	protected function init()
+	public function init()
 	{
-		$session = Application::getConfig( 'Session' );
+		$cookies = Application::getConfig( 'Cookies' );
 
-		$driver = 'PHP';
+		$driver = 'Browser';
 
-		if( array_key_exists( 'driver', $session ) )
+		if( array_key_exists( 'driver', $cookies ) )
 		{
-			$driver = $session[ 'driver' ];
+			$driver = $cookies[ 'driver' ];
 		}
 
 		try
 		{
-			$class = self::SESSION_DRIVER . $driver;
-			$this->driver = new $class( $session );
+			$class = self::COOKIES_DRIVER . $driver;
+			$this->driver = new $class( $cookies );
 		}
 		catch( Exception $e )
 		{
-			throw new Exceptions\SessionDriver;
+			throw new Exceptions\CookiesDriver;
 		}
-		
-		$this->driver->start();
 	}
 	
 	/**
@@ -62,7 +50,7 @@ class Sessions
 	 * @param String
 	 * @return Mixed
 	 */
-	public function exist( $key = null )
+	public function exists( $key )
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->driver, 'exist' ), $params );
@@ -74,7 +62,7 @@ class Sessions
 	 * @param String
 	 * @return Mixed
 	 */
-	public function get( $key = null )
+	public function get( $key )
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->driver, 'get' ), $params );
@@ -88,7 +76,7 @@ class Sessions
 	 * @param bool
 	 * @return Mixed
 	 */
-	public function set( $key = null, $value, $encrypt = false )
+	public function set( $key, $value, $expiry = 0, $encrypt = false )
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->driver, 'set' ), $params );
@@ -100,7 +88,7 @@ class Sessions
 	 * @param String
 	 * @return Mixed
 	 */
-	public function delete( $key = null )
+	public function delete( $key )
 	{
 		$params = func_get_args();
 		return call_user_func_array( array( $this->driver, 'delete' ), $params );
@@ -115,17 +103,7 @@ class Sessions
 	public function destroy()
 	{
 		$params = func_get_args();
-		return call_user_func_array( array( $this->driver, 'destroy' ), array() );
+		return call_user_func_array( array( $this->driver, 'destroy' ), $params );
 	}
-	
-	/**
-	 * ID Method
-	 *
-	 * @param String
-	 * @return Mixed
-	 */
-	public function id()
-	{
-		return call_user_func_array( array( $this->driver, 'id' ), array() );
-	}
+
 }

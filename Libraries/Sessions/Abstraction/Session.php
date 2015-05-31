@@ -11,6 +11,13 @@
  */
 abstract class Session
 {
+	protected $config;
+	
+	public function __construct( $config )
+	{
+		$this->config = $config;
+	}
+
 	abstract public function start();
 	
 	abstract public function exist( $key = null );

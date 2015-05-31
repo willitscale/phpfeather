@@ -1,7 +1,7 @@
 <?php namespace n3tw0rk\phpfeather\Libraries\Sessions\Exceptions;
 
 /**
- * Session Exception Class
+ * Session Driver Exception Class
  *
  * @version 0.1.1
  * @package n3tw0rk\phpfeather\Libraries\Sessions\Exceptions

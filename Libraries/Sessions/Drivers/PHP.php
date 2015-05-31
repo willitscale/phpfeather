@@ -32,8 +32,20 @@ class PHP extends Session
 		return null;
 	}
 	
-	public function set( $key = null, $value, $encrypt = false )
+	public function set( $key = null, $value, $encrypt = null )
 	{
+		if( null == $encrypt )
+		{
+			if( array_key_exists( 'encrypt', $this->config ) )
+			{
+				$encrypt = $this->config[ 'encrypt' ];
+			}
+			else
+			{
+				$encrypt = false;
+			}
+		}
+		
 		if( $encrypt )
 		{
 			$value = 'encryptedValue';
