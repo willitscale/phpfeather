@@ -27,7 +27,7 @@ class Cookies
 		$cookies = Application::getConfig( 'Cookies' );
 
 		$driver = 'Browser';
-
+		
 		if( array_key_exists( 'driver', $cookies ) )
 		{
 			$driver = $cookies[ 'driver' ];
@@ -42,6 +42,7 @@ class Cookies
 		{
 			throw new Exceptions\CookiesDriver;
 		}
+			
 	}
 	
 	/**

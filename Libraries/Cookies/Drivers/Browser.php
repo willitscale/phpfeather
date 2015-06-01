@@ -39,7 +39,8 @@ class Browser extends Cookies
 			}
 			else
 			{
-				$expiry = 0;
+				// 1 Year
+				$expiry = 31536000;
 			}
 		}
 
@@ -60,13 +61,13 @@ class Browser extends Cookies
 			$value = 'encryptedValue';
 		}
 
-		setcookie( $key, $value, $expiry );
+		setcookie( $key, $value, time() + $expiry, '/' );
 	}
 	
 	public function delete( $key = null )
 	{
 		unset( $_COOKIE[ $key ] );
-		setcookie( $key, null, time() - 3600 );
+		setcookie( $key, null, time() - 3600, '/' );
 	}
 	
 	public function destroy()

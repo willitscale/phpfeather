@@ -129,6 +129,11 @@ class HTTP
 		return $_SERVER[ 'HTTP_REFERER' ];
 	}
 	
+	public static function agent()
+	{
+		return $_SERVER[ 'HTTP_USER_AGENT' ];
+	}
+	
 	public static function url( $params = array(), $full = false )
 	{
 		$urn = '';
