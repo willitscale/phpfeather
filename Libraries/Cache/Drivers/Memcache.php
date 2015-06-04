@@ -1,16 +1,13 @@
-<?php namespace n3tw0rk\phpfeather\drivers\cache;
+<?php namespace n3tw0rk\phpfeather\Libraries\Cache\Drivers;
 
-include_once( 'abstraction/cached.php' );
-include_once( 'exceptions/cache.php' );
-
-use n3tw0rk\phpfeather\abstraction\Cached;
-use n3tw0rk\phpfeather\exceptions\CacheException;
+use n3tw0rk\phpfeather\Libraries\Abstraction\Cached;
+use n3tw0rk\phpfeather\Libraries\Exceptions\Cache AS Exception;
 
 /**
  *	Memcache Driver Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\drivers\cache
+ *	@package n3tw0rk\phpfeather\Libraries\Cache\Drivers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,17 +19,17 @@ class MemcacheDriver extends Cached
 	{
 		if( !class_exists( 'Memcache' ) )
 		{
-			throw new CacheException( INVALID_MEMCACHE );
+			throw new Exception( INVALID_MEMCACHE );
 		}
 
 		if( !array_key_exists( 'host', $attributes ) )
 		{
-			throw new CacheException( INVALID_CACHE_HOST );
+			throw new Exception( INVALID_CACHE_HOST );
 		}
 
 		if( !array_key_exists( 'port', $attributes ) )
 		{
-			throw new CacheException( INVALID_CACHE_PORT );
+			throw new Exception( INVALID_CACHE_PORT );
 		}
 
 		$this->attributes = $attributes;

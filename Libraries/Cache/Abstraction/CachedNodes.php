@@ -1,4 +1,4 @@
-<?php namespace n3tw0rk\phpfeather\Abstraction;
+<?php namespace n3tw0rk\phpfeather\Libraries\Cache\Abstraction;
 
 /**
  *	Cached Nodes Abstract Class

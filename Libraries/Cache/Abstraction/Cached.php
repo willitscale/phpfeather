@@ -1,10 +1,10 @@
-<?php namespace n3tw0rk\phpfeather\Abstraction;
+<?php namespace n3tw0rk\phpfeather\Libraries\Cache\Abstraction;
 
 /**
  *	Cached Abstract Class
  *
  *	@version 0.1.1
- *	@package n3tw0rk\phpfeather\Abstraction
+ *	@package n3tw0rk\phpfeather\Libraries\Cache\Abstraction
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
