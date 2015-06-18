@@ -1,10 +1,10 @@
-<?php
+<?php namespace n3tw0rk\phpfeather\Libraries\Forms\Helpers;
 
 /**
  *	Validation
  *
  *	@version 0.0.1
- *	@package phpfeather\libraries
+ *	@package n3tw0rk\phpfeather\Libraries\Forms\Helpers
  *	@author James Lockhart james@n3tw0rk.co.uk
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html

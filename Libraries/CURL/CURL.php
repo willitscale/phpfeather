@@ -1,19 +1,7 @@
-<?php
-
-namespace uk\co\n3tw0rk\phpfeather\libraries;
-
-if( !defined( 'SYSTEM_ACCESS' ) )
-{
-	trigger_error( 'Unable to access application.', E_USER_ERROR );
-}
-
-include_once( 'exceptions/cache.php' );
-
-use uk\co\n3tw0rk\phpfeather\system as SYSTEM;
-use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
+<?php namespace n3tw0rk\phpfeather\Libraries;
 
 /**
- *	CUrl Library
+ *	CURL Library
  *
  *	@version 0.0.1
  *	@package libraries\curl
@@ -21,7 +9,7 @@ use uk\co\n3tw0rk\phpfeather\exceptions as EXCEPTIONS;
  *	@license GPL v2
  *	@license http://www.gnu.org/licenses/gpl-2.0.html
  */
-class PHPF_CUrl
+class CURL
 {
 	private $options = array(
 		CURLOPT_RETURNTRANSFER => true,

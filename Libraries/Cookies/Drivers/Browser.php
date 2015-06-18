@@ -3,7 +3,7 @@
 use n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies;
 
 /**
- *	PHP Driver
+ *	Browser Driver
  *
  *	@version 0.1.1
  *	@package n3tw0rk\phpfeather\Libraries\Cookies\Drivers
@@ -13,12 +13,19 @@ use n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies;
  */
 class Browser extends Cookies
 {
-
+	/**
+	 * (non-PHPdoc)
+	 * @see \n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies::exist()
+	 */
 	public function exist( $key )
 	{
 		return array_key_exists( $key, $_COOKIE );
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see \n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies::get()
+	 */
 	public function get( $key )
 	{
 		if( $this->exist( $key ) )
@@ -29,7 +36,11 @@ class Browser extends Cookies
 		return null;
 	}
 	
-	public function set( $key, $value, $expiry = 0, $encrypt = null )
+	/**
+	 * (non-PHPdoc)
+	 * @see \n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies::set()
+	 */
+	public function set( $key, $value, $expiry = 0, $path = null, $encrypt = null )
 	{
 		if( null == $expiry )
 		{
@@ -61,16 +72,46 @@ class Browser extends Cookies
 			$value = 'encryptedValue';
 		}
 
-		setcookie( $key, $value, time() + $expiry, '/' );
+		if( empty( $path ) )
+		{
+			$path = $this->config[ 'path' ];
+		}
+		
+		setcookie( $key, $value, time() + $expiry, $path );
 	}
 	
-	public function delete( $key = null )
+	/**
+	 * (non-PHPdoc)
+	 * @see \n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies::delete()
+	 */
+	public function delete( $key = null, $path = null )
 	{
+		if( empty( $path ) )
+		{
+			$path = $this->config[ 'path' ];
+		}
+
+		if( !isset( $key ) )
+		{
+			return;
+		}
+
 		unset( $_COOKIE[ $key ] );
-		setcookie( $key, null, time() - 3600, '/' );
+		
+		setcookie( $key, null, time() - 3600, $this->config[ 'path' ] );
 	}
 	
-	public function destroy()
+	/**
+	 * (non-PHPdoc)
+	 * @see \n3tw0rk\phpfeather\Libraries\Cookies\Abstraction\Cookies::destroy()
+	 */
+	public function destroy( $path = null )
 	{
+		$all = array_keys( $_COOKIE );
+
+		foreach( $all AS $key )
+		{
+			$this->delete( $key, $path );
+		}
 	}
 }

@@ -20,4 +20,9 @@ return
 	 * Set a session expiry (0 never expire)
 	 */
 	'expiry'	=>	3600,
+	
+	/**
+	 * Set a session expiry (0 never expire)
+	 */
+	'path'	=>	'/',
 ];
