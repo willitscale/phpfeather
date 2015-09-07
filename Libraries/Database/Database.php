@@ -163,6 +163,14 @@ class Database
 			'info' ], $params );
 	}
 	
+	public function affected()
+	{
+		$this->testConnection();
+		$params = func_get_args();
+		return call_user_func_array( [ $this->instances[ $this->currentInstance ],
+			'affected' ], $params );
+	}
+	
 	public function testConnection()
 	{
 		$this->instances[ $this->currentInstance ]->testConnection();

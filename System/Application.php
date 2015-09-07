@@ -92,6 +92,17 @@ class Application
 		{
 			$_SERVER[ 'APPLICATION_NS' ] = $config[ 'namespace' ] . '\\';
 		}
+		
+		if( array_key_exists( 'timezone', $config ) )
+		{
+			date_default_timezone_set( $config[ 'timezone' ] );
+		}
+		
+		if( array_key_exists( 'encoding', $config ) )
+		{
+			mb_internal_encoding( $config[ 'encoding' ] );
+			mb_http_output( $config[ 'encoding' ] );
+		}
 	}
 	
 	/**

@@ -92,4 +92,9 @@ class Mongodb extends Connection
 	{
 		return $this->connection->insert_id;
 	}
+	
+	public function affected()
+	{
+		return $this->connection->affected_rows;
+	}
 }

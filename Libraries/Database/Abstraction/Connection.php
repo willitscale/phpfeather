@@ -37,6 +37,7 @@ abstract class Connection
 	abstract public function info();
 	abstract public function error();
 	abstract public function id();
+	abstract public function affected();
 
 	abstract public function escape( $string );
 
