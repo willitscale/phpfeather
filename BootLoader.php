@@ -30,8 +30,13 @@ class BootLoader
 			return false;
 		}
 
-		return self::load( $class, $_SERVER[ 'APPLICATION_NS' ], 
-			$_SERVER[ 'DOCUMENT_ROOT' ] );
+		return self::load( 
+			$class, 
+			$_SERVER[ 'APPLICATION_NS' ], 
+			@$_SERVER[ 'DOCUMENT_ROOT' ] ?: 
+			@$_SERVER[ 'PWD' ] ?: 
+			'.' 
+		);
 	}
 	
 	public static function framework( $class )
